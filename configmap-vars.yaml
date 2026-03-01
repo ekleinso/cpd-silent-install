@@ -11,7 +11,7 @@ data:
   OPENSHIFT_TYPE: "self-managed"
   IBM_ENTITLEMENT_KEY: "<your entitlement key>"
   COMPONENTS: "factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee,dv"
-  VERSION: "5.2.0"
+  VERSION: "5.2.2"
   IMAGE_ARCH: "amd64"
   STG_CLASS_BLOCK: "managed-nfs-storage"
   STG_CLASS_FILE: "managed-nfs-storage"

@@ -90,9 +90,6 @@ spec:
       - name: case-19
         mountPath: /opt/ansible/case.19
         subPath: case.19
-      - name: case-20
-        mountPath: /opt/ansible/case.20
-        subPath: case.20
   restartPolicy: Never
   serviceAccount: ibmce-deployment-sa
   volumes:
@@ -183,10 +180,6 @@ spec:
       secret:
         defaultMode: 0755
         secretName: case-19
-    - name: case-20
-      secret:
-        defaultMode: 0755
-        secretName: case-20
   securityContext:
     fsGroup: 0
     runAsNonRoot: true

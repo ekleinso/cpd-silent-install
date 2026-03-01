@@ -1,0 +1,77 @@
+kind: ResourceQuota
+apiVersion: v1
+metadata:
+  name: compute-resources
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
+spec:
+  hard:
+    limits.cpu: '100'
+    limits.memory: 160Gi
+    pods: '100'
+    requests.cpu: '10'
+    requests.memory: 20Gi
+  scopes:
+    - NotTerminating
+---
+kind: ResourceQuota
+apiVersion: v1
+metadata:
+  name: compute-resources
+  namespace: ${PROJECT_CPD_INST_OPERANDS}
+spec:
+  hard:
+    limits.cpu: '300'
+    limits.memory: 768Gi
+    pods: '300'
+    requests.cpu: '100'
+    requests.memory: 320Gi
+  scopes:
+    - NotTerminating
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_CPD_INST_OPERANDS}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_SCHEDULING_SERVICE}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_LICENSE_SERVICE}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"

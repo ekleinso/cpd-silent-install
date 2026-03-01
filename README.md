@@ -7,7 +7,7 @@ oc login
 ```
 2. Clone repo to the client workstation or download as a zip from git.
 ```shell
-git clone -b v2 https://github.com/ekleinso/cpd-silent-install.git
+git clone -b v520 https://github.com/ekleinso/cpd-silent-install.git
 ```
 3. Change into directory ***cpd-alt-install***.
 ```shell

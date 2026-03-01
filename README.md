@@ -44,7 +44,7 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f service-account.yaml
 ```shell
 envsubst < rolebindings.yaml | oc create -f -
 ```
-7. Update variables in **configmap-vars.yaml** for your environment
+7. Update variables in **configmap-vars.yaml** for your environment. For internal repo IMAGE_PULL_PREFIX would be something like *registry.exampe.local/docker*.
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -65,7 +65,7 @@ data:
   STG_CLASS_FILE: "managed-nfs-server"
   OCP_URL: "kubernetes.default.svc.cluster.local"
   IMAGE_PULL_SECRET: "ibm-entitlement-key"
-  IMAGE_PULL_PREFIX: "registry.example.org/docker"
+  IMAGE_PULL_PREFIX: "icr.io"
   OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v4@sha256:3f03ae78e4101a63c089980ffb5eef0db51b8897afd44b609ce409897e5f0827"
 ```
 

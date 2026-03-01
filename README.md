@@ -7,7 +7,7 @@ oc login
 ```
 2. Clone repo to the client workstation or download as a zip from git.
 ```shell
-git clone -b v522 https://github.com/ekleinso/cpd-silent-install.git
+git clone -b v530 https://github.com/ekleinso/cpd-silent-install.git
 ```
 3. Change into directory ***cpd-silent-install***.
 ```shell
@@ -58,13 +58,15 @@ data:
   PROJECT_CPD_INST_OPERANDS: "${PROJECT_CPD_INST_OPERANDS}"
   OPENSHIFT_TYPE: "self-managed"
   IBM_ENTITLEMENT_KEY: "<your entitlement key>"
-  COMPONENTS: "factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee,dv"
-  VERSION: "5.2.2"
+  COMPONENTS: "cpd_platform,factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee"
+  VERSION: "5.3.0"
   IMAGE_ARCH: "amd64"
   STG_CLASS_BLOCK: "managed-nfs-storage"
   STG_CLASS_FILE: "managed-nfs-storage"
   OCP_URL: "kubernetes.default.svc.cluster.local"
-  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v3:latest"
+  IMAGE_PULL_SECRET: "ibm-entitlement-key"
+  IMAGE_PULL_PREFIX: "icr.io"
+  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v4@sha256:3ee760b6c69f4c325672044c3cf26db8c70366e29e14b0b7dd2c5d96dea63028"
 ```
 
 ```shell
@@ -98,6 +100,10 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-16.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-17.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-18.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-19.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-20.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-21.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-23.yaml
 ```
 10. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
 ```shell
@@ -122,16 +128,4 @@ oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-install
 or 
 ```shell
 oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-install
-```
-14. Update ***spec.containers[0].image*** in **3-pod-services.yaml** to point to the correct repository/image as necessary for your environment. Create pod to add Cloud Pak for Data components.
-```shell
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f 3-pod-services.yaml
-```
-15. Monitor install log and/or check pod status until it is completed
-```shell
-oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-services
-```
-or 
-```shell
-oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-services
 ```

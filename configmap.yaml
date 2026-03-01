@@ -7,7 +7,7 @@ data:
     ################################################################################
     # IBM Knowledge Catalog parameters
     ################################################################################
-    custom_spec:
+    non_olm:
       wkc:
         enableKnowledgeGraph: True
         useFDB: True
@@ -22,10 +22,17 @@ data:
     ################################################################################
     login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
     ################################################################################
-    # Install License Manager, Certificate Manager and Scheduler
+    # Install License Manager and Scheduler
     ################################################################################
     apply-cluster-components --release=${VERSION} --license_acceptance=true --licensing_ns=${PROJECT_LICENSE_SERVICE}
-    apply-scheduler --release=${VERSION} --license_acceptance=true --scheduler_ns=${PROJECT_SCHEDULING_SERVICE}
+    case-download --components=scheduler --release=${VERSION} --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --cluster_resources=true
+    oc create -f /tmp/work/cluster_scoped_resources.yaml | tee /tmp/work/scheduler-cluster_scoped_resources.out
+    mv /tmp/work/cluster_scoped_resources.yaml /tmp/work/scheduler-cluster_scoped_resources.yaml
+    kubectl get secret -n openshift-config pull-secret -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d > /tmp/work/dockerconfig.json
+    oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_SCHEDULING_SERVICE}
+    oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERATORS}
+    oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERANDS}
+    apply-scheduler --release=${VERSION} --license_acceptance=true --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --image_pull_prefix=${IMAGE_PULL_PREFIX} --image_pull_secret=${IMAGE_PULL_SECRET}
   cpd_install.sh: |
     #!/bin/bash
     set -ex
@@ -36,16 +43,9 @@ data:
     ################################################################################
     # Install Cloud Pak for Data
     ################################################################################
+    case-download --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --cluster_resources=true
+    oc create -f /tmp/work/cluster_scoped_resources.yaml | tee /tmp/work/cluster_scoped_resources.out
     authorize-instance-topology --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
-    setup-instance --release=${VERSION} --license_acceptance=true --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE}
+    install-components --license_acceptance=true --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --instance_ns=${PROJECT_CPD_INST_OPERANDS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE} --image_pull_prefix=${IMAGE_PULL_PREFIX} --image_pull_secret=${IMAGE_PULL_SECRET} --param-file=/tmp/work/install-options.yml
     apply-entitlement --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --entitlement=cpd-enterprise --production=false
     get-cpd-instance-details --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --get_admin_initial_credentials=true
-  cpd_services.sh: |
-    #!/bin/bash
-    set -ex
-    ################################################################################
-    # Login to OCP
-    ################################################################################
-    login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
-    apply-olm --release=${VERSION} --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --components=${COMPONENTS}
-    apply-cr --release=${VERSION} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --components=${COMPONENTS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE} --license_acceptance=true --param-file=/tmp/work/install-options.yml

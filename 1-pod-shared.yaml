@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: cpd-shared-v52x
+  name: cpd-shared-v53x
   labels:
     app: cpd-shared
 spec:
   containers:
-  - name: olm-utils-v3
+  - name: olm-utils-v4
     envFrom:
     - configMapRef:
         name: cpd-vars
@@ -17,7 +17,7 @@ spec:
           name: cpd-token
           key: token
     imagePullPolicy: Always
-    image: icr.io/cpopen/cpd/olm-utils-v3:latest
+    image: icr.io/cpopen/cpd/olm-utils-v4@sha256:3ee760b6c69f4c325672044c3cf26db8c70366e29e14b0b7dd2c5d96dea63028
     command: ["/bin/sh", "-c"]
     args: 
       - "/opt/ansible/cpd_shared.sh"
@@ -32,64 +32,76 @@ spec:
         subPath: cpd_shared.sh
       - name: case-00
         mountPath: /opt/ansible/case.00
-        subPath: case.00
+        subPath: case-00
       - name: case-01
         mountPath: /opt/ansible/case.01
-        subPath: case.01
+        subPath: case-01
       - name: case-02
         mountPath: /opt/ansible/case.02
-        subPath: case.02
+        subPath: case-02
       - name: case-03
         mountPath: /opt/ansible/case.03
-        subPath: case.03
+        subPath: case-03
       - name: case-04
         mountPath: /opt/ansible/case.04
-        subPath: case.04
+        subPath: case-04
       - name: case-05
         mountPath: /opt/ansible/case.05
-        subPath: case.05
+        subPath: case-05
       - name: case-06
         mountPath: /opt/ansible/case.06
-        subPath: case.06
+        subPath: case-06
       - name: case-07
         mountPath: /opt/ansible/case.07
-        subPath: case.07
+        subPath: case-07
       - name: case-08
         mountPath: /opt/ansible/case.08
-        subPath: case.08
+        subPath: case-08
       - name: case-09
         mountPath: /opt/ansible/case.09
-        subPath: case.09
+        subPath: case-09
       - name: case-10
         mountPath: /opt/ansible/case.10
-        subPath: case.10
+        subPath: case-10
       - name: case-11
         mountPath: /opt/ansible/case.11
-        subPath: case.11
+        subPath: case-11
       - name: case-12
         mountPath: /opt/ansible/case.12
-        subPath: case.12
+        subPath: case-12
       - name: case-13
         mountPath: /opt/ansible/case.13
-        subPath: case.13
+        subPath: case-13
       - name: case-14
         mountPath: /opt/ansible/case.14
-        subPath: case.14
+        subPath: case-14
       - name: case-15
         mountPath: /opt/ansible/case.15
-        subPath: case.15
+        subPath: case-15
       - name: case-16
         mountPath: /opt/ansible/case.16
-        subPath: case.16
+        subPath: case-16
       - name: case-17
         mountPath: /opt/ansible/case.17
-        subPath: case.17
+        subPath: case-17
       - name: case-18
         mountPath: /opt/ansible/case.18
-        subPath: case.18
+        subPath: case-18
       - name: case-19
         mountPath: /opt/ansible/case.19
-        subPath: case.19
+        subPath: case-19
+      - name: case-20
+        mountPath: /opt/ansible/case.20
+        subPath: case-20
+      - name: case-21
+        mountPath: /opt/ansible/case.21
+        subPath: case-21
+      - name: case-22
+        mountPath: /opt/ansible/case.22
+        subPath: case-22
+      - name: case-23
+        mountPath: /opt/ansible/case.23
+        subPath: case-23
   restartPolicy: Never
   serviceAccount: ibmce-deployment-sa
   volumes:
@@ -180,6 +192,22 @@ spec:
       secret:
         defaultMode: 0755
         secretName: case-19
+    - name: case-20
+      secret:
+        defaultMode: 0755
+        secretName: case-20
+    - name: case-21
+      secret:
+        defaultMode: 0755
+        secretName: case-21
+    - name: case-22
+      secret:
+        defaultMode: 0755
+        secretName: case-22
+    - name: case-23
+      secret:
+        defaultMode: 0755
+        secretName: case-23
   securityContext:
     fsGroup: 0
     runAsNonRoot: true

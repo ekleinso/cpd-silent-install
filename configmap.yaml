@@ -26,7 +26,7 @@ data:
     ################################################################################
     apply-cluster-components --release=${VERSION} --license_acceptance=true --licensing_ns=${PROJECT_LICENSE_SERVICE}
     case-download --components=scheduler --release=${VERSION} --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --cluster_resources=true
-    oc create -f /tmp/work/cluster_scoped_resources.yaml | tee /tmp/work/scheduler-cluster_scoped_resources.out
+    oc apply -f /tmp/work/cluster_scoped_resources.yaml --server-side --force-conflicts | tee /tmp/work/scheduler-cluster_scoped_resources.out
     mv /tmp/work/cluster_scoped_resources.yaml /tmp/work/scheduler-cluster_scoped_resources.yaml
     kubectl get secret -n openshift-config pull-secret -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d > /tmp/work/dockerconfig.json
     oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_SCHEDULING_SERVICE}
@@ -44,7 +44,7 @@ data:
     # Install Cloud Pak for Data
     ################################################################################
     case-download --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --cluster_resources=true
-    oc create -f /tmp/work/cluster_scoped_resources.yaml | tee /tmp/work/cluster_scoped_resources.out
+    oc apply -f /tmp/work/cluster_scoped_resources.yaml --server-side --force-conflicts | tee /tmp/work/cluster_scoped_resources.out
     authorize-instance-topology --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
     install-components --license_acceptance=true --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --instance_ns=${PROJECT_CPD_INST_OPERANDS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE} --image_pull_prefix=${IMAGE_PULL_PREFIX} --image_pull_secret=${IMAGE_PULL_SECRET} --param-file=/tmp/work/install-options.yml
     apply-entitlement --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --entitlement=cpd-enterprise --production=false

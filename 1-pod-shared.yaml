@@ -17,7 +17,7 @@ spec:
           name: cpd-token
           key: token
     imagePullPolicy: Always
-    image: icr.io/cpopen/cpd/olm-utils-v4@sha256:3ee760b6c69f4c325672044c3cf26db8c70366e29e14b0b7dd2c5d96dea63028
+    image: icr.io/cpopen/cpd/olm-utils-v4@sha256:3f03ae78e4101a63c089980ffb5eef0db51b8897afd44b609ce409897e5f0827
     command: ["/bin/sh", "-c"]
     args: 
       - "/opt/ansible/cpd_shared.sh"
@@ -99,9 +99,6 @@ spec:
       - name: case-22
         mountPath: /opt/ansible/case.22
         subPath: case-22
-      - name: case-23
-        mountPath: /opt/ansible/case.23
-        subPath: case-23
   restartPolicy: Never
   serviceAccount: ibmce-deployment-sa
   volumes:
@@ -204,10 +201,6 @@ spec:
       secret:
         defaultMode: 0755
         secretName: case-22
-    - name: case-23
-      secret:
-        defaultMode: 0755
-        secretName: case-23
   securityContext:
     fsGroup: 0
     runAsNonRoot: true

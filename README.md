@@ -7,7 +7,7 @@ oc login
 ```
 2. Clone repo to the client workstation or download as a zip from git.
 ```shell
-git clone -b v530 https://github.com/ekleinso/cpd-silent-install.git
+git clone -b v531 https://github.com/ekleinso/cpd-silent-install.git
 ```
 3. Change into directory ***cpd-silent-install***.
 ```shell
@@ -58,15 +58,15 @@ data:
   PROJECT_CPD_INST_OPERANDS: "${PROJECT_CPD_INST_OPERANDS}"
   OPENSHIFT_TYPE: "self-managed"
   IBM_ENTITLEMENT_KEY: "<your entitlement key>"
-  COMPONENTS: "cpd_platform,factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee"
-  VERSION: "5.3.0"
+  COMPONENTS: "cpd_platform,factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee,dv"
+  VERSION: "5.3.1"
   IMAGE_ARCH: "amd64"
-  STG_CLASS_BLOCK: "managed-nfs-storage"
-  STG_CLASS_FILE: "managed-nfs-storage"
+  STG_CLASS_BLOCK: "managed-nfs-server"
+  STG_CLASS_FILE: "managed-nfs-server"
   OCP_URL: "kubernetes.default.svc.cluster.local"
   IMAGE_PULL_SECRET: "ibm-entitlement-key"
-  IMAGE_PULL_PREFIX: "icr.io"
-  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v4@sha256:3ee760b6c69f4c325672044c3cf26db8c70366e29e14b0b7dd2c5d96dea63028"
+  IMAGE_PULL_PREFIX: "registry.example.org/docker"
+  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v4@sha256:3f03ae78e4101a63c089980ffb5eef0db51b8897afd44b609ce409897e5f0827"
 ```
 
 ```shell
@@ -103,7 +103,6 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-19.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-20.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-21.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-23.yaml
 ```
 10. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
 ```shell

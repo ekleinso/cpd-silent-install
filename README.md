@@ -9,7 +9,7 @@ oc login
 ```shell
 git clone -b v520 https://github.com/ekleinso/cpd-silent-install.git
 ```
-3. Change into directory ***cpd-alt-install***.
+3. Change into directory ***cpd-silent-install***.
 ```shell
 cd cpd-silent-install
 ```

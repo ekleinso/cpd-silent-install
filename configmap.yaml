@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cpd-install-options
+data:
+  install-options.yml: |
+    ################################################################################
+    # IBM Knowledge Catalog parameters
+    ################################################################################
+    custom_spec:
+      wkc:
+        enableKnowledgeGraph: True
+        useFDB: True
+        enableDataQuality: True
+  cpd_shared.sh: |
+    #!/bin/bash
+    set -ex
+    cat case.* | base64 -d > /tmp/work/case.tar.gz
+    tar -C /tmp/work -zxf /tmp/work/case.tar.gz
+    ################################################################################
+    # Login to OCP
+    ################################################################################
+    login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
+    
+    ################################################################################
+    # Install License Manager, Certificate Manager and Scheduler
+    ################################################################################
+    apply-cluster-components --release=${VERSION} --license_acceptance=true --licensing_ns=${PROJECT_LICENSE_SERVICE}
+    oc create clusterrolebinding ibm-cpd-scheduling-system-kube-scheduler --clusterrole=system:kube-scheduler --serviceaccount=${PROJECT_SCHEDULING_SERVICE}:ibm-cpd-scheduling-operator
+    oc create clusterrolebinding ibm-cpd-scheduling-system-volume-scheduler --clusterrole=system:volume-scheduler --serviceaccount=${PROJECT_SCHEDULING_SERVICE}:ibm-cpd-scheduling-operator
+    apply-scheduler --release=${VERSION} --license_acceptance=true --scheduler_ns=${PROJECT_SCHEDULING_SERVICE}
+  cpd_install.sh: |
+    #!/bin/bash
+    set -ex
+    ################################################################################
+    # Login to OCP
+    ################################################################################
+    login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
+    ################################################################################
+    # Install Cloud Pak for Data
+    ################################################################################
+    authorize-instance-topology --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
+    setup-instance --release=${VERSION} --license_acceptance=true --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE}
+    apply-entitlement --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --entitlement=cpd-enterprise --production=false
+    get-cpd-instance-details --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --get_admin_initial_credentials=true
+  cpd_services.sh: |
+    #!/bin/bash
+    set -ex
+    ################################################################################
+    # Login to OCP
+    ################################################################################
+    login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
+    apply-olm --release=${VERSION} --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --components=${COMPONENTS}
+    apply-cr --release=${VERSION} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --components=${COMPONENTS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE} --license_acceptance=true --param-file=/tmp/work/install-options.yml
+  cpd_ca_certificate.sh: |
+    #!/bin/bash
+    set -ex
+    ################################################################################
+    # Login to OCP
+    ################################################################################
+    login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
+    install-cpd-config-ac --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
+    enable-cpd-config-ac --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
+    oc -n openshift-config get cm user-ca-bundle -o jsonpath='{.data.ca-bundle\.crt}' > /tmp/work/ca-bundle.crt
+    oc create secret generic cpd-custom-ca-certs -n ${PROJECT_CPD_INST_OPERANDS} --from-file=ca-bundle.crt=/tmp/work/ca-bundle.crt
+    gen-platform-ca-certs --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --apply=true

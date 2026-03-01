@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cpd-vars
+  namespace: ${PROJECT_CPD_INST_OPERANDS}
+data:
+  PROJECT_LICENSE_SERVICE: "${PROJECT_LICENSE_SERVICE}"
+  PROJECT_SCHEDULING_SERVICE: "${PROJECT_SCHEDULING_SERVICE}"
+  PROJECT_CPD_INST_OPERATORS: "${PROJECT_CPD_INST_OPERATORS}"
+  PROJECT_CPD_INST_OPERANDS: "${PROJECT_CPD_INST_OPERANDS}"
+  OPENSHIFT_TYPE: "self-managed"
+  IBM_ENTITLEMENT_KEY: "<your entitlement key>"
+  COMPONENTS: "factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee,dv"
+  VERSION: "5.2.0"
+  IMAGE_ARCH: "amd64"
+  STG_CLASS_BLOCK: "managed-nfs-storage"
+  STG_CLASS_FILE: "managed-nfs-storage"
+  OCP_URL: "kubernetes.default.svc.cluster.local"
+  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v3:latest"

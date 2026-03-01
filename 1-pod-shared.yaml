@@ -1,0 +1,194 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpd-shared-v52x
+  labels:
+    app: cpd-shared
+spec:
+  containers:
+  - name: olm-utils-v3
+    envFrom:
+    - configMapRef:
+        name: cpd-vars
+    env:
+    - name: OCP_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: cpd-token
+          key: token
+    imagePullPolicy: Always
+    image: icr.io/cpopen/cpd/olm-utils-v3:latest
+    command: ["/bin/sh", "-c"]
+    args: 
+      - "/opt/ansible/cpd_shared.sh"
+    volumeMounts:
+      - name: olm-utils-storage
+        mountPath: /tmp/work
+      - name: cpd-install-options
+        mountPath: /tmp/work/install-options.yml
+        subPath: install-options.yml
+      - name: cpd-install-options
+        mountPath: /opt/ansible/cpd_shared.sh
+        subPath: cpd_shared.sh
+      - name: case-00
+        mountPath: /opt/ansible/case.00
+        subPath: case.00
+      - name: case-01
+        mountPath: /opt/ansible/case.01
+        subPath: case.01
+      - name: case-02
+        mountPath: /opt/ansible/case.02
+        subPath: case.02
+      - name: case-03
+        mountPath: /opt/ansible/case.03
+        subPath: case.03
+      - name: case-04
+        mountPath: /opt/ansible/case.04
+        subPath: case.04
+      - name: case-05
+        mountPath: /opt/ansible/case.05
+        subPath: case.05
+      - name: case-06
+        mountPath: /opt/ansible/case.06
+        subPath: case.06
+      - name: case-07
+        mountPath: /opt/ansible/case.07
+        subPath: case.07
+      - name: case-08
+        mountPath: /opt/ansible/case.08
+        subPath: case.08
+      - name: case-09
+        mountPath: /opt/ansible/case.09
+        subPath: case.09
+      - name: case-10
+        mountPath: /opt/ansible/case.10
+        subPath: case.10
+      - name: case-11
+        mountPath: /opt/ansible/case.11
+        subPath: case.11
+      - name: case-12
+        mountPath: /opt/ansible/case.12
+        subPath: case.12
+      - name: case-13
+        mountPath: /opt/ansible/case.13
+        subPath: case.13
+      - name: case-14
+        mountPath: /opt/ansible/case.14
+        subPath: case.14
+      - name: case-15
+        mountPath: /opt/ansible/case.15
+        subPath: case.15
+      - name: case-16
+        mountPath: /opt/ansible/case.16
+        subPath: case.16
+      - name: case-17
+        mountPath: /opt/ansible/case.17
+        subPath: case.17
+      - name: case-18
+        mountPath: /opt/ansible/case.18
+        subPath: case.18
+      - name: case-19
+        mountPath: /opt/ansible/case.19
+        subPath: case.19
+      - name: case-20
+        mountPath: /opt/ansible/case.20
+        subPath: case.20
+  restartPolicy: Never
+  serviceAccount: ibmce-deployment-sa
+  volumes:
+    - name: olm-utils-storage
+      persistentVolumeClaim:
+        claimName: olm-utils-storage
+    - name: cpd-install-options
+      configMap:
+        defaultMode: 0755
+        name: cpd-install-options
+    - name: case-00
+      secret:
+        defaultMode: 0755
+        secretName: case-00
+    - name: case-01
+      secret:
+        defaultMode: 0755
+        secretName: case-01
+    - name: case-02
+      secret:
+        defaultMode: 0755
+        secretName: case-02
+    - name: case-03
+      secret:
+        defaultMode: 0755
+        secretName: case-03
+    - name: case-04
+      secret:
+        defaultMode: 0755
+        secretName: case-04
+    - name: case-05
+      secret:
+        defaultMode: 0755
+        secretName: case-05
+    - name: case-06
+      secret:
+        defaultMode: 0755
+        secretName: case-06
+    - name: case-07
+      secret:
+        defaultMode: 0755
+        secretName: case-07
+    - name: case-08
+      secret:
+        defaultMode: 0755
+        secretName: case-08
+    - name: case-09
+      secret:
+        defaultMode: 0755
+        secretName: case-09
+    - name: case-10
+      secret:
+        defaultMode: 0755
+        secretName: case-10
+    - name: case-11
+      secret:
+        defaultMode: 0755
+        secretName: case-11
+    - name: case-12
+      secret:
+        defaultMode: 0755
+        secretName: case-12
+    - name: case-13
+      secret:
+        defaultMode: 0755
+        secretName: case-13
+    - name: case-14
+      secret:
+        defaultMode: 0755
+        secretName: case-14
+    - name: case-15
+      secret:
+        defaultMode: 0755
+        secretName: case-15
+    - name: case-16
+      secret:
+        defaultMode: 0755
+        secretName: case-16
+    - name: case-17
+      secret:
+        defaultMode: 0755
+        secretName: case-17
+    - name: case-18
+      secret:
+        defaultMode: 0755
+        secretName: case-18
+    - name: case-19
+      secret:
+        defaultMode: 0755
+        secretName: case-19
+    - name: case-20
+      secret:
+        defaultMode: 0755
+        secretName: case-20
+  securityContext:
+    fsGroup: 0
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault

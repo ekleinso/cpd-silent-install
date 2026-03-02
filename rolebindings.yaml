@@ -2,12 +2,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: ibmce-cpd-deployment
+  name: cpd-silent-install
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: ibmce-deployment-sa
+    name: cpd-silent-install
     namespace: ${PROJECT_CPD_INST_OPERANDS}

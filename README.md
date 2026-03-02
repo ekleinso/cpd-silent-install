@@ -64,7 +64,7 @@ data:
   STG_CLASS_BLOCK: "managed-nfs-storage"
   STG_CLASS_FILE: "managed-nfs-storage"
   OCP_URL: "kubernetes.default.svc.cluster.local"
-  OLM_UTILS_IMAGE: "registry.example.org/docker/cpopen/cpd/olm-utils-v3:latest"
+  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v3:latest"
 ```
 
 ```shell

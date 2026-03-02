@@ -31,7 +31,7 @@ spec:
         mountPath: /opt/ansible/cpd_ca_certificate.sh
         subPath: cpd_ca_certificate.sh
   restartPolicy: Never
-  serviceAccount: ibmce-deployment-sa
+  serviceAccount: cpd-silent-install
   volumes:
     - name: olm-utils-storage
       persistentVolumeClaim:

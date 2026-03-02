@@ -17,6 +17,6 @@ data:
   STG_CLASS_FILE: "managed-nfs-storage"
   OCP_URL: "kubernetes.default.svc.cluster.local"
   IMAGE_PULL_SECRET: "ibm-entitlement-key"
-  IMAGE_PULL_PREFIX: "artifactory.gym.lan/docker"
+  IMAGE_PULL_PREFIX: "icr.io"
   OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v4@sha256:8609fc7f1acb037aac0d6081b4d49552a417eafb63f1d640ba653c54c1985e7b"
   

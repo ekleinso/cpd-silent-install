@@ -103,7 +103,7 @@ spec:
         mountPath: /opt/ansible/case.23
         subPath: case-23
   restartPolicy: Never
-  serviceAccount: ibmce-deployment-sa
+  serviceAccount: cpd-silent-install
   volumes:
     - name: olm-utils-storage
       persistentVolumeClaim:

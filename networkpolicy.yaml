@@ -1,0 +1,93 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-from-cp4d
+  namespace: ${PROJECT_CPD_INST_OPERANDS}
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_SCHEDULING_SERVICE}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_LICENSE_SERVICE}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_CPD_INST_OPERATORS}
+  policyTypes:
+    - Ingress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-from-cp4d
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_SCHEDULING_SERVICE}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_LICENSE_SERVICE}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_CPD_INST_OPERANDS}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-operator-lifecycle-manager
+  policyTypes:
+    - Ingress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-from-cp4d
+  namespace: ${PROJECT_SCHEDULING_SERVICE}
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_CPD_INST_OPERATORS}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_LICENSE_SERVICE}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_CPD_INST_OPERANDS}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-operator-lifecycle-manager
+  policyTypes:
+    - Ingress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-from-cp4d
+  namespace: ${PROJECT_LICENSE_SERVICE}
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_CPD_INST_OPERATORS}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_SCHEDULING_SERVICE}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ${PROJECT_CPD_INST_OPERANDS}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-operator-lifecycle-manager
+  policyTypes:
+    - Ingress
+

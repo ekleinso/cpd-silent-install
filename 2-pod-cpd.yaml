@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: cpd-install-v52x
+  name: cpd-install-v53x
   labels:
     app: cpd-install
 spec:
   containers:
-  - name: olm-utils-v3
+  - name: olm-utils-v4
     envFrom:
     - configMapRef:
         name: cpd-vars
@@ -17,7 +17,7 @@ spec:
           name: cpd-token
           key: token
     imagePullPolicy: Always
-    image: icr.io/cpopen/cpd/olm-utils-v3:latest
+    image: icr.io/cpopen/cpd/olm-utils-v4@sha256:3f03ae78e4101a63c089980ffb5eef0db51b8897afd44b609ce409897e5f0827
     command: ["/bin/sh", "-c"]
     args: 
       - "/opt/ansible/cpd_install.sh"
@@ -31,7 +31,7 @@ spec:
         mountPath: /opt/ansible/cpd_install.sh
         subPath: cpd_install.sh
   restartPolicy: Never
-  serviceAccount: ibmce-deployment-sa
+  serviceAccount: cpd-silent-install
   volumes:
     - name: olm-utils-storage
       persistentVolumeClaim:

@@ -1,5 +1,16 @@
-# IBM Cloud Pak for Data Installation Spark Notes
+# IBM Cloud Pak for Data Silent Installation 
+This repository contains a framework to perform a silent installation of IBM Cloud Pak for Data on OpenShift. It was developed to replace the need for a bastion and streamline the installation process. As a framework it is not a complete automated solution for installing CPD like [cloud-pak-deployer](https://github.com/IBM/cloud-pak-deployer) or the new [Gitops method leveraging ArgoCD](https://github.com/IBM/cpd-cli/blob/master/docs/argocd/argocd-install.md). It is a starting point for a deployment pipeline that leverages the same tools used for [cpd-cli](https://github.com/IBM/cpd-cli/) installation method. It was created with air-gapped environments in mind but should work in non-air-gapped environments. 
 
+Additional pods can be configured to run additional scripts to perform functions such as adding/removing services, updating certificates, etc by adding scripts to the cpd-install-options ConfigMap and creating a new pod using the 2-pod-cpd.yaml file as an example.
+
+## OpenShift Prerequisites
+- (Required) [Red Hat OpenShift cert-manager Operator](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=cluster-installing-cert-manager-operator)
+- (Optional) [GPU Operators](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=software-installing-operators-services-that-require-gpus)
+- (Optional) [Red Hat OpenShift AI](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=software-installing-red-hat-openshift-ai)
+- (Optional) [Red Hat OpenShift Serverless Knative Eventing](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=software-installing-red-hat-openshift-serverless-knative-eventing)
+
+Check the documentation links to determine if you need the optional components for the services you plan to install.
+These prerequisites and other manual steps such as mirroring images for air-gapped environments are not automated here because in most environments they may already installed or are managed by other teams.
 ## Installation Notes
 1. Login with OpenShift cli
 ```shell

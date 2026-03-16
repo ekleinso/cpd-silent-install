@@ -43,6 +43,10 @@ export PROJECT_CPD_INST_OPERANDS="ibm-instance"
 ```shell
 envsubst < resourcequota.yaml | oc apply -f -
 ```
+(Optional) If resource quotas are configured we will need to configure limitranges that will configure default limits for pods that may be configured with limits
+```shell
+envsubst < limitranges.yaml | oc apply -f -
+```
 (Optional) If NetworkPolicy is configured for the project either delete them or make sure they are configured for CP4D
 ```shell
 envsubst < networkpolicy.yaml | oc apply -f -

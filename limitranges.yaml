@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_CPD_INST_OPERANDS}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_SCHEDULING_SERVICE}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-default-limits
+  namespace: ${PROJECT_LICENSE_SERVICE}
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "4Gi"

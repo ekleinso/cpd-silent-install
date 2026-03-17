@@ -41,15 +41,15 @@ export PROJECT_CPD_INST_OPERANDS="ibm-instance"
 ```
 (Optional) If resource quotas are configured either delete them or make sure they are increased for CP4D
 ```shell
-envsubst < resourcequota.yaml | oc apply -f -
+oc create cm cpd-silent-quotas --from-literal=quotas="$(envsubst < resourcequota.yaml)" 
 ```
-(Optional) If resource quotas are configured we will need to configure limitranges that will configure default limits for pods that may be configured with limits
+(Optional) If resource quotas are configured we will need to configure limitranges that will configure default limits for pods that may not be configured with limits
 ```shell
-envsubst < limitranges.yaml | oc apply -f -
+oc create cm cpd-silent-limitranges --from-literal=limitranges="$(envsubst < limitranges.yaml)" 
 ```
 (Optional) If NetworkPolicy is configured for the project either delete them or make sure they are configured for CP4D
 ```shell
-envsubst < networkpolicy.yaml | oc apply -f -
+oc create cm cpd-silent-networkpolicy --from-literal=networkpolicy="$(envsubst < networkpolicy.yaml)"
 ```
 5. Create service account in **PROJECT_CPD_INST_OPERANDS**
 ```shell
@@ -59,38 +59,22 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f service-account.yaml
 ```shell
 envsubst < rolebindings.yaml | oc create -f -
 ```
-7. Update variables in **configmap-vars.yaml** for your environment. For internal repo IMAGE_PULL_PREFIX would be something like *registry.exampe.local/docker*.
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cpd-vars
-  namespace: ${PROJECT_CPD_INST_OPERANDS}
-data:
-  PROJECT_LICENSE_SERVICE: "${PROJECT_LICENSE_SERVICE}"
-  PROJECT_SCHEDULING_SERVICE: "${PROJECT_SCHEDULING_SERVICE}"
-  PROJECT_CPD_INST_OPERATORS: "${PROJECT_CPD_INST_OPERATORS}"
-  PROJECT_CPD_INST_OPERANDS: "${PROJECT_CPD_INST_OPERANDS}"
-  OPENSHIFT_TYPE: "self-managed"
-  IBM_ENTITLEMENT_KEY: "<your entitlement key>"
-  COMPONENTS: "cpd_platform,factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee,dv"
-  VERSION: "5.3.1"
-  IMAGE_ARCH: "amd64"
-  STG_CLASS_BLOCK: "managed-nfs-server"
-  STG_CLASS_FILE: "managed-nfs-server"
-  OCP_URL: "kubernetes.default.svc.cluster.local"
-  IMAGE_PULL_SECRET: "ibm-entitlement-key"
-  IMAGE_PULL_PREFIX: "icr.io"
-  OLM_UTILS_IMAGE: "icr.io/cpopen/cpd/olm-utils-v4@sha256:3f03ae78e4101a63c089980ffb5eef0db51b8897afd44b609ce409897e5f0827"
-```
+7. Update variables in **configmap-vars.yaml** for your environment. For internal repo **IMAGE_PULL_PREFIX** would be something like *registry.example.local/docker* 
+```shell
+export STG_CLASS_BLOCK="managed-nfs-storage"
+export STG_CLASS_FILE="managed-nfs-storage"
+export IMAGE_PULL_PREFIX="icr.io"
+export COMPONENTS="cpd_platform,factsheet,analyticsengine,datarefinery,datastage_ent,dmc,wkc,ws_pipelines,wml,openscale,ws,hee,dv"
+export ENTITLEMENT_PRODUCTION="false"
+export ENTITLEMENT="cpd-enterprise"
 
-```shell
 envsubst < configmap-vars.yaml | oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f -
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f configmap.yaml
+
+oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f configmap.yaml
 ```
-8. Update value for ***storageClassName*** in all of the entries in **storage.yaml** if you changed the ***STG_CLASS_FILE*** variable in **configmap.yaml** before you run command to create storage.
+8. Update value for ***storageClassName*** in all of the entries in **storage.yaml**.
 ```shell
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f storage.yaml
+envsubst < storage.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
 9. Create secrets
 ```shell
@@ -121,7 +105,7 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
 ```
 10. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
 ```shell
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f 1-pod-shared.yaml
+envsubst < 1-pod-shared.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
 11. Monitor install log and/or check pod status until it is completed
 ```shell
@@ -133,7 +117,7 @@ oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-shared
 ```
 12. Update ***spec.containers[0].image*** in **2-pod-cpd.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
 ```shell
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f 2-pod-cpd.yaml
+envsubst < 2-pod-cpd.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
 13. Monitor install log and/or check pod status until it is completed
 ```shell

@@ -11,6 +11,8 @@ Additional pods can be configured to run additional scripts to perform functions
 
 Check the documentation links to determine if you need the optional components for the services you plan to install.
 These prerequisites and other manual steps such as mirroring images for air-gapped environments are not automated here because in most environments they may already installed or are managed by other teams.
+
+This is the quickstart version that leverages cluster admin.
 ## Installation Notes
 1. Login with OpenShift cli
 ```shell

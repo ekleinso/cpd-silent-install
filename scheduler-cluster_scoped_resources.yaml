@@ -1,0 +1,788 @@
+#Generating cluster scoped resource for 'scheduler'
+---
+# Source: scheduler-cluster-scoped/templates/00-crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: scheduling.scheduler.spectrumcomputing.ibm.com
+  labels:
+    app.kubernetes.io/name: "ibm-cpd-scheduler"
+    app.kubernetes.io/managed-by: "ansible"
+    app.kubernetes.io/instance: "cpd-scheduler"
+    release: "cpd-scheduler"
+    icpdsupport/addOnId: scheduling 
+    component-id: scheduler-cluster-scoped
+spec:
+  group: scheduler.spectrumcomputing.ibm.com
+  scope: Namespaced
+  names:
+    kind: Scheduling
+    listKind: SchedulingList
+    plural: scheduling
+    singular: scheduling
+    shortNames:
+      - sched
+  versions:
+  - name: v1
+    additionalPrinterColumns:
+    - description: The version of the scheduler service
+      jsonPath: .status.versions.reconciled
+      name: Version
+      type: string
+    - description: The creation time of the deployment
+      jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: The status of the Scheduler
+      jsonPath: .status.cpd-schedulingStatus
+      name: Status
+      type: string
+    - description: The messages from the scheduler operator
+      jsonPath: .status.message
+      name: Messages
+      type: string
+    served: true
+    storage: true
+    subresources:
+      status: {}
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          apiVersion:
+            type: string
+            description: "apiVersion defines the versioned schema of this representation of an object"
+          kind:
+            type: string
+            description: "This CRD is for the kind"
+          metadata:
+            type: object
+          status:
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+            description: "Status defines the observed state of Scheduling"
+            properties:
+              conditions:
+                items:
+                  x-kubernetes-preserve-unknown-fields: true
+                  properties:
+                    message:
+                      type: string
+                    reason:
+                      type: string
+                    status:
+                      type: string
+                    type:
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              versions:
+                properties:
+                  reconciled:
+                    type: string
+                required:
+                - reconciled
+                type: object
+          spec:
+            type: object
+            description: "Contains specifications for IBM Cloud Pak for Data Scheduling"
+            x-kubernetes-preserve-unknown-fields: true
+            properties:
+              license:
+                type: object
+                properties:
+                  accept:
+                    type: boolean
+                required:
+                  - accept
+              appVersion:
+                type: string
+              version:
+                type: string
+                default: "1.61.0"
+                description: "This is the version of the scheduler you wish to deploy"
+              shutdown:
+                description: "This controls if the Scheduler is running or not.  Setting to true will shutdown the pods, except the scheduler pod.  Setting to force will shutdown all scheduler pods.  Setting to false will enable all pods."
+                type: string
+                pattern: "^(true|false|force)$"
+              disablePjc:
+                description: "Set to true to disable the Parallel Job Controller, and remove the PJC clusterrole."
+                type: boolean
+                default: false
+              image_digests:
+                description: "For applying a hotfix to a particular image"
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              image_tags:
+                description: "For developers to override the image digest with a tag for hotfixes"
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              pullPrefix:
+                description: "To override the host for all the images managed by the operator"
+                type: string
+              ibm_entitlement_key_name:
+                type: string
+                description: "The ibm_entitlement_key_name is a pull to use to get images from a private registry for non-olm install"
+              runPodsOnManagementNodes:
+                type: boolean
+                default: false
+                description: "Allow pods run on master nodes"
+              setPodPriority:
+                type: boolean
+                default: true
+                description: "Set priority parameter for the pods"
+              scaleConfig:
+                type: string
+                pattern: "^(small_mincpureq|small|medium|large)$"
+                description: "Control for supporting larger clusters"
+              status:
+                type: object
+                description: "Subresources for status"
+                properties:
+                  managedResources:
+                    items:
+                      type: string
+                    type: array  
+              enableMcScheduler:
+                type: boolean
+                description: "Enable Multi Cluster features"
+                default: true
+              enableInstanaMetricCollection:
+                type: boolean
+                description: "Enable Instana Metric Collection"
+                default: false
+              enableMetricsAuth:
+                type: boolean
+                description: "Enable metrics authentication"
+                default: false
+              customResources:
+                description: "To set custom resource requests and limits for scheduling operand deployments"
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+            required:
+              - license
+              - version
+---
+# Source: scheduler-cluster-scoped/templates/01-cluster-rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    component-id: scheduler-cluster-scoped
+    icpdsupport/addOnId: scheduling
+  name: ibm-cpd-scheduling-operator
+rules:
+- apiGroups:
+  - ibm.com
+  resources:
+  - paralleljobs
+  - paralleljobs/status
+  - paralleljobs/finalizers
+  - resourceplans
+  - resourceplans/status
+  - resourceplans/finalizers
+  - resourcematches
+  - resourcematches/status
+  - resourcematches/finalizers
+  verbs:
+  - list
+  - get
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+- apiGroups:
+  - scheduler.spectrumcomputing.ibm.com
+  resources:
+  - scheduling
+  - scheduling/status
+  - scheduling/finalizers
+  verbs:
+  - update
+  - get
+  - list
+  - patch
+  - watch
+  - delete
+  - create
+- apiGroups:
+  - zen.cpd.ibm.com
+  resources:
+  - zenservices
+  - zenservices/status
+  - zenservices/finalizers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - create
+  - list
+  - get
+  - patch
+  - watch
+  - update
+- apiGroups:
+  - ""
+  - events.k8s.io
+  resources:
+  - events
+  verbs:
+  - list
+  - watch
+  - get
+  - create
+  - patch
+  - update
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - validatingwebhookconfigurations
+  - mutatingwebhookconfigurations
+  verbs:
+  - list
+  - get
+  - create
+  - patch
+  - update
+  - delete
+  - watch
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterrolebindings
+  - clusterroles
+  verbs:
+  - list
+  - get
+  - create
+  - patch
+  - delete
+  - watch
+  - update
+- apiGroups:
+  - ""
+  - rbac.authorization.k8s.io
+  resources:
+  - pods
+  - serviceaccounts
+  - pods/exec
+  - roles
+  - rolebindings
+  - services
+  - services/finalizers
+  - endpoints
+  - persistentvolumeclaims
+  - events
+  - secrets
+  - serviceaccounts
+  verbs:
+  - list
+  - get
+  - watch
+  - update
+  - patch
+  - create
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - list
+  - get
+  - watch
+  - update
+  - patch
+  - create
+  - delete
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  - cronjobs
+  verbs:
+  - create
+  - delete
+  - list
+  - get
+  - watch
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - resourcequotas
+  - nodes
+  verbs:
+  - list
+  - get
+  - watch
+- apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - restricted-v2
+  - restricted
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+- apiGroups:
+  - coordination.k8s.io
+  resourceNames:
+  - kube-scheduler
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leasecandidates
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resourceNames:
+  - kube-scheduler
+  resources:
+  - endpoints
+  verbs:
+  - get
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resourceNames:
+  - kubernetes
+  resources:
+  - endpoints
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - bindings
+  - pods/binding
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - pods/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - replicationcontrollers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  - extensions
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumeclaims
+  - persistentvolumes
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+  - update
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - csinodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - csidrivers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - csistoragecapacities
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - config.openshift.io
+  resources:
+  - infrastructures
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - work.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - remotekuberestemplates
+  - remotekuberestemplates/finalizers
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - physicallocations
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - physicallocations/status
+  verbs:
+  - update
+  - patch
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - physicallocationsets
+  - distributionrules
+  verbs:
+  - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - list
+  - get
+  - watch
+  - create
+  - patch
+  - update
+  - delete
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - physicallocations
+  - physicallocationsetbindings
+  - physicallocationsets
+  - distributionrules
+  - addondistributionrulescores
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - patch
+  - update
+  - delete
+- apiGroups:
+  - apps
+  - extensions
+  resources:
+  - deployments
+  - daemonsets
+  - replicasets
+  - statefulsets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - networkpolicies
+  verbs:
+  - get
+  - list
+  - create
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - operator.ibm.com
+  resources:
+  - operandrequests
+  verbs:
+  - list
+  - get
+  - watch
+  - create
+  - delete
+  - patch
+  - update
+- apiGroups:
+  - work.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - remotecrs/finalizers
+  - remotecrs/status
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - distributionruledecisions
+  - addondistributionrulescores
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - distributionrules/status
+  - distributionruledecisions/status
+  verbs:
+  - update
+  - patch
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - distributionrules/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - work.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - appliedremotecrs
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - work.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - appliedremotecrs/status
+  - remotekuberestemplates/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - work.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - appliedremotecrs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
+  - impersonate
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+- apiGroups:
+  - work.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - remotecrs
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - delete
+  - deletecollection
+  - patch
+  - execute-as
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routes
+  verbs:
+  - list
+  - get
+  - create
+  - update
+  - patch
+---
+# Source: scheduler-cluster-scoped/templates/01-cluster-rbac.yaml
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: scheduling.scheduler.spectrumcomputing.ibm.com-v1-ibm-scheduler-edit
+  labels:
+    component-id: scheduler-cluster-scoped
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    icpdsupport/addOnId: scheduling
+
+rules:
+- apiGroups:
+  - scheduler.spectrumcomputing.ibm.com
+  resources:
+  - scheduling
+  verbs:
+  - get
+  - create
+  - update
+  - patch
+  - delete
+---
+# Source: scheduler-cluster-scoped/templates/01-cluster-rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component-id: scheduler-cluster-scoped
+    icpdsupport/addOnId: scheduling
+  name: ibm-cpd-scheduling-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ibm-cpd-scheduling-operator
+subjects:
+- kind: ServiceAccount
+  name: ibm-cpd-scheduling-operator
+  namespace: ibm-scheduler

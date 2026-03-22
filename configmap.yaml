@@ -25,22 +25,46 @@ data:
     # Process LimitRanges, NetworkPolicy and Quotas
     ################################################################################
     oc get cm cpd-silent-limitranges -o jsonpath='{.data.limitranges}' | tee > /tmp/work/limitranges.yaml
-    [ -s "/tmp/work/limitranges.yaml" ] && oc create -f /tmp/work/limitranges.yaml
+    [ -s "/tmp/work/limitranges.yaml" ] && oc apply -f /tmp/work/limitranges.yaml
     oc get cm cpd-silent-networkpolicy -o jsonpath='{.data.networkpolicy}' | tee > /tmp/work/networkpolicy.yaml
-    [ -s "/tmp/work/networkpolicy.yaml" ] && oc create -f /tmp/work/networkpolicy.yaml
+    [ -s "/tmp/work/networkpolicy.yaml" ] && oc apply -f /tmp/work/networkpolicy.yaml
     oc get cm cpd-silent-quotas -o jsonpath='{.data.quotas}' | tee > /tmp/work/resourcequota.yaml
-    [ -s "/tmp/work/resourcequota.yaml" ] && oc create -f /tmp/work/resourcequota.yaml
+    [ -s "/tmp/work/resourcequota.yaml" ] && oc apply -f /tmp/work/resourcequota.yaml
+    ################################################################################
+    # Configure pull secrets
+    ################################################################################
+    if [ "${IMAGE_PULL_PREFIX}" == "icr.io" ]; then
+      if [ -z "${IBM_ENTITLEMENT_KEY}" ]; then
+        echo "You must configure an IBM_ENTITLEMENT_KEY"
+        exit 1
+      else
+        DOCKER_USERNAME=cp
+        DOCKER_PASSWORD=${IBM_ENTITLEMENT_KEY}
+        DOCKER_SERVER=${IMAGE_PULL_PREFIX}
+      fi
+    else
+      if [ -z "${PRIVATE_REGISTRY_USER}" ] && [ -z "${PRIVATE_REGISTRY_PASSWORD}" ]; then
+        echo "You must configure credentials for your private registry"
+        exit 1
+      else
+        if [ "${PRIVATE_REGISTRY_USER}" == "global" ]; then
+          DOCKER_USERNAME=using_global
+          DOCKER_PASSWORD=using_global
+          DOCKER_SERVER=using_global
+        else
+          DOCKER_USERNAME=${PRIVATE_REGISTRY_USER}
+          DOCKER_PASSWORD=${PRIVATE_REGISTRY_PASSWORD}
+          DOCKER_SERVER=${IMAGE_PULL_PREFIX%/*}
+        fi
+      fi
+    fi
+    oc create secret docker-registry ${IMAGE_PULL_SECRET} --docker-username=${DOCKER_USERNAME} --docker-password=${DOCKER_PASSWORD} --docker-server=${DOCKER_SERVER} --namespace=${PROJECT_SCHEDULING_SERVICE}
+    oc create secret docker-registry ${IMAGE_PULL_SECRET} --docker-username=${DOCKER_USERNAME} --docker-password=${DOCKER_PASSWORD} --docker-server=${DOCKER_SERVER} --namespace=${PROJECT_CPD_INST_OPERATORS}
+    oc create secret docker-registry ${IMAGE_PULL_SECRET} --docker-username=${DOCKER_USERNAME} --docker-password=${DOCKER_PASSWORD} --docker-server=${DOCKER_SERVER} --namespace=${PROJECT_CPD_INST_OPERANDS}
     ################################################################################
     # Install License Manager and Scheduler
     ################################################################################
     apply-cluster-components --release=${VERSION} --license_acceptance=true --licensing_ns=${PROJECT_LICENSE_SERVICE}
-    case-download --components=scheduler --release=${VERSION} --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --cluster_resources=true
-    oc apply -f /tmp/work/cluster_scoped_resources.yaml --server-side --force-conflicts | tee /tmp/work/scheduler-cluster_scoped_resources.out
-    mv /tmp/work/cluster_scoped_resources.yaml /tmp/work/scheduler-cluster_scoped_resources.yaml
-    kubectl get secret -n openshift-config pull-secret -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d > /tmp/work/dockerconfig.json
-    oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_SCHEDULING_SERVICE}
-    oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERATORS}
-    oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERANDS}
     apply-scheduler --release=${VERSION} --license_acceptance=true --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --image_pull_prefix=${IMAGE_PULL_PREFIX} --image_pull_secret=${IMAGE_PULL_SECRET}
   cpd_install.sh: |
     #!/bin/bash
@@ -52,9 +76,6 @@ data:
     ################################################################################
     # Install Cloud Pak for Data
     ################################################################################
-    case-download --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --cluster_resources=true
-    oc apply -f /tmp/work/cluster_scoped_resources.yaml --server-side --force-conflicts | tee /tmp/work/cluster_scoped_resources.out
-    authorize-instance-topology --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
     install-components --license_acceptance=true --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --instance_ns=${PROJECT_CPD_INST_OPERANDS} --block_storage_class=${STG_CLASS_BLOCK} --file_storage_class=${STG_CLASS_FILE} --image_pull_prefix=${IMAGE_PULL_PREFIX} --image_pull_secret=${IMAGE_PULL_SECRET} --param-file=/tmp/work/install-options.yml
     apply-entitlement --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --entitlement=${ENTITLEMENT:-cpd-enterprise} --production=${ENTITLEMENT_PRODUCTION:-false}
     get-cpd-instance-details --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --get_admin_initial_credentials=true

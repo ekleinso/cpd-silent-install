@@ -1,0 +1,1598 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    components: scheduler,cpfs,ibm_usage_metering,cpd_platform,ibm-licensing,opencontent_opensearch,ccs,factsheet,analyticsengine,cognos_analytics,ibm_redis_cp,dashboard,datagate,dp,wkc,datarefinery,dataproduct,replication,datastage_ent,datastage_ent_plus,db2u,dmc,dv,db2oltp,bigsql,db2wh,ws_runtimes,ws,wml,dods,postgresql,edb_cp4d,hee,opencontent_fdb,ibm_neo4j,watsonx_ai_ifm,ikc_standard,ikc_premium,datalineage,opencontent_rabbitmq,match360,streamsets,informix,informix_cp4d,mantaflow,mongodb,mongodb_cp4d,db2aaservice,openpages,ws_pipelines,planning_analytics,productmaster,rstudio,canvasbase,spss,syntheticdata,voice_gateway,watson_gateway,watson_discovery,openscale,watson_speech,watsonx_ai,data_governor,watson_assistant,wca_base,wca,wca_ansible,wca_z,wca_z_ce,watsonx_data,watsonx_governance,watsonx_orchestrate,zen,platform-config,ibm-common-service-operator,ibm-iam-operator,ibm-namespace-scope-operator
+  name: cpd-instance-crs.5.3.1
+rules:
+- apiGroups:
+  - scheduler.spectrumcomputing.ibm.com
+  resources:
+  - scheduling
+  - scheduling/status
+  - scheduling/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - cluster.ibm-cpd-mcscheduler.ibm.com
+  resources:
+  - physicallocations
+  - physicallocations/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - operator.ibm.com
+  resources:
+  - commonservices
+  - operandconfigs
+  - operandregistries
+  - operandrequests
+  - operandbindinfos
+  - cataloguis
+  - helmapis
+  - helmrepos
+  - namespacescopes
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - monitoring.operator.ibm.com
+  resources:
+  - exporters
+  - prometheusexts
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - elasticstack.ibm.com
+  resources:
+  - elasticstacks
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - acme.cert-manager.io
+  resources:
+  - challenges
+  - orders
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - cert-manager.io
+  resources:
+  - certificaterequests
+  - certificates
+  - clusterissuers
+  - issuers
+  - signers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - operator.ibm.com
+  resources:
+  - ibmusagemeterings
+  - ibmusagemeterings/status
+  - ibmservicemeterdefinitions
+  - ibmservicemeterdefinitions/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - cpd.ibm.com
+  resources:
+  - ibmcpds
+  - ibmcpds/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - opensearch.cloudpackopen.ibm.com
+  resources:
+  - clusters
+  - clusters/status
+  - clusters/finalizers
+  - nodepool
+  - nodepool/status
+  - nodepool/finalizers
+  - nodepools
+  - nodepools/status
+  - nodepools/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ccs.cpd.ibm.com
+  resources:
+  - ccs
+  - ccs/status
+  - ccs/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - runtimes.ibm.com
+  resources:
+  - runtimeassemblies
+  - runtimeassemblies/status
+  - runtimeassemblies/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - factsheet.cpd.ibm.com
+  resources:
+  - factsheet
+  - factsheet/spec
+  - factsheet/status
+  - factsheet/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ae.cpd.ibm.com
+  resources:
+  - analyticsengine
+  - analyticsengines
+  - analyticsengine/status
+  - analyticsengines/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ca.cpd.ibm.com
+  resources:
+  - caservices
+  - caservices/status
+  - caservices/finalizers
+  - caserviceinstances
+  - caserviceinstances/status
+  - caserviceinstances/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - redis.ibm.com
+  resources:
+  - rediscps
+  - rediscps/status
+  - rediscps/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - dashboard.cpd.ibm.com
+  resources:
+  - dashboardservices
+  - dashboardservices/status
+  - dashboardservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - datagate.cpd.ibm.com
+  resources:
+  - datagateservices
+  - datagateservices/status
+  - datagateservices/finalizers
+  - datagateinstanceservices
+  - datagateinstanceservices/status
+  - datagateinstanceservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - dp.cpd.ibm.com
+  resources:
+  - dp
+  - dp/status
+  - dp/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wkc.cpd.ibm.com
+  resources:
+  - wkc
+  - wkc/status
+  - wkc/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - datarefinery.cpd.ibm.com
+  resources:
+  - datarefinery
+  - datarefinery/status
+  - datarefinery/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - data-product.cpd.ibm.com
+  resources:
+  - dataproduct
+  - dataproduct/spec
+  - dataproduct/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - replication.cpd.ibm.com
+  resources:
+  - replicationserviceinstances
+  - replicationserviceinstances/status
+  - replicationserviceinstances/finalizers
+  - replicationservices
+  - replicationservices/status
+  - replicationservices/finalizers
+  - replicationextensions
+  - replicationextensions/status
+  - replicationextensions/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ds.cpd.ibm.com
+  resources:
+  - datastages
+  - datastages/status
+  - datastages/finalizers
+  - pxruntimes
+  - pxruntimes/status
+  - pxruntimes/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ds.cpd.ibm.com
+  resources:
+  - datastages
+  - datastages/status
+  - datastages/finalizers
+  - pxruntimes
+  - pxruntimes/status
+  - pxruntimes/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - db2u.databases.ibm.com
+  resources:
+  - db2uclusters
+  - db2uclusters/status
+  - db2uclusters/finalizers
+  - formations
+  - formations/status
+  - formations/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - dmc.databases.ibm.com
+  resources:
+  - dmcs
+  - dmcs/status
+  - dmcaddons
+  - dmcaddons/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - db2u.databases.ibm.com
+  resources:
+  - dvservices
+  - dvservices/status
+  - dvservices/finalizers
+  - bigsqls
+  - bigsqls/status
+  - bigsqls/finalizers
+  - db2uclusters
+  - db2uclusters/status
+  - db2uclusters/finalizers
+  - formations
+  - formations/status
+  - formations/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - databases.cpd.ibm.com
+  resources:
+  - db2oltpservices
+  - db2oltpservices/status
+  - db2oltpservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - db2u.databases.ibm.com
+  resources:
+  - bigsqlservices
+  - bigsqlservices/status
+  - bigsqlservices/finalizers
+  - bigsqls
+  - bigsqls/status
+  - bigsqls/finalizers
+  - db2uclusters
+  - db2uclusters/status
+  - db2uclusters/finalizers
+  - formations
+  - formations/status
+  - formations/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - databases.cpd.ibm.com
+  resources:
+  - db2whservices
+  - db2whservices/status
+  - db2whservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ws.cpd.ibm.com
+  resources:
+  - notebookruntimes
+  - notebookruntimes/status
+  - notebookruntimes/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ws.cpd.ibm.com
+  resources:
+  - ws
+  - ws/status
+  - ws/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wml.cpd.ibm.com
+  resources:
+  - wmlbases
+  - wmlbases/spec
+  - wmlbases/status
+  - wmlbases/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - dods.cpd.ibm.com
+  resources:
+  - dods
+  - dods/status
+  - dods/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - postgresql.k8s.enterprisedb.io
+  resources:
+  - clusters
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - edb.cpd.ibm.com
+  resources:
+  - cpdedbservices
+  - cpdedbservices/status
+  - cpdedbservices/finalizers
+  - cpdedbinstances
+  - cpdedbinstances/status
+  - cpdedbinstances/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - hadoop.cpd.ibm.com
+  resources:
+  - hadoop
+  - hadoop/status
+  - hadoop/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - foundationdb.opencontent.ibm.com
+  resources:
+  - fdbcluster
+  - fdbclusters
+  - fdbclusters/status
+  - fdbclusters/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - neo4j.cpd.ibm.com
+  resources:
+  - neo4jcluster
+  - neo4jcluster/spec
+  - neo4jcluster/status
+  - neo4jcluster/finalizers
+  - neo4jclusters
+  - neo4jclusters/spec
+  - neo4jclusters/status
+  - neo4jclusters/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - watsonxaiifm.cpd.ibm.com
+  resources:
+  - watsonxaiifm
+  - watsonxaiifm/status
+  - watsonxaiifm/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ikc.cpd.ibm.com
+  resources:
+  - ikcstandard
+  - ikcstandard/spec
+  - ikcstandard/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ikc.cpd.ibm.com
+  resources:
+  - ikcpremium
+  - ikcpremium/spec
+  - ikcpremium/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - cpd.ibm.com
+  resources:
+  - datalineage
+  - datalineage/status
+  - datalineage/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - rabbitmq.opencontent.ibm.com
+  resources:
+  - rabbitmqclusters
+  - rabbitmqclusters/finalizers
+  - rabbitmqclusters/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - mdm.cpd.ibm.com
+  resources:
+  - masterdatamanagements
+  - masterdatamanagements/status
+  - masterdatamanagements/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - streamsets.cpd.ibm.com
+  resources:
+  - streamsetsinstaller
+  - streamsetsinstaller/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ifx.ibm.com
+  resources:
+  - informixes
+  - informixes/status
+  - informixes/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ifx.ibm.com
+  resources:
+  - informixservices
+  - informixservices/status
+  - informixservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - adl.getmanta.com
+  resources:
+  - mantaflows
+  - mantaflows/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - mongodb.com
+  resources:
+  - mongodb
+  - mongodb/finalizers
+  - mongodbusers
+  - opsmanagers
+  - opsmanagers/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - mongodb.cpd.ibm.com
+  resources:
+  - cpdmongodbservices
+  - cpdmongodbservices/status
+  - cpdmongodbservices/finalizers
+  - cpdmongodbopsmanagers
+  - cpdmongodbopsmanagers/status
+  - cpdmongodbopsmanagers/finalizers
+  - cpdmongodbs
+  - cpdmongodbs/status
+  - cpdmongodbs/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - databases.cpd.ibm.com
+  resources:
+  - db2aaserviceservices
+  - db2aaserviceservices/status
+  - db2aaserviceservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - openpages.cpd.ibm.com
+  resources:
+  - openpagesservices
+  - openpagesservices/status
+  - openpagesservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wspipelines.cpd.ibm.com
+  resources:
+  - wspipelines
+  - wspipelines/status
+  - wspipelines/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - tm1s.ibm.com
+  resources:
+  - tm1s
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - pa.cpd.ibm.com
+  resources:
+  - paservices
+  - paservice
+  - passservices
+  - paservices/status
+  - paservice/status
+  - paservices/finalizers
+  - paservice/finalizers
+  - paserviceinstances
+  - paserviceinstance
+  - paserviceinstances/status
+  - paserviceinstance/status
+  - paserviceinstances/finalizers
+  - paserviceinstance/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - productmaster.cpd.ibm.com
+  resources:
+  - productmasterservices
+  - productmasterservices/status
+  - productmasterservices/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - rstudio.cpd.ibm.com
+  resources:
+  - rstudioaddons
+  - rstudioaddons/status
+  - rstudioaddons/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - canvasbase.cpd.ibm.com
+  resources:
+  - canvasbase
+  - canvasbase/spec
+  - canvasbase/status
+  - canvasbase/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - spssmodeler.cpd.ibm.com
+  resources:
+  - spss
+  - spss/spec
+  - spss/status
+  - spss/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - syntheticdata.cpd.ibm.com
+  resources:
+  - syntheticdata
+  - syntheticdata/spec
+  - syntheticdata/status
+  - syntheticdata/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - voicegateway.watson.ibm.com
+  resources:
+  - voicegateways
+  - voicegateways/status
+  - voicegateways/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - watson-gateway.watson.ibm.com
+  resources:
+  - watsongateways
+  - watsongateways/status
+  - watsongateways/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - oppy.ibm.com
+  resources:
+  - temporarypatches
+  - temporarypatches/status
+  - temporarypatches/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - discovery.watson.ibm.com
+  resources:
+  - watsondiscoveries
+  - watsondiscoveries/status
+  - watsondiscoveries/finalizers
+  - watsondiscoveryapis
+  - watsondiscoveryapis/status
+  - watsondiscoveryapis/finalizers
+  - watsondiscoverycnms
+  - watsondiscoverycnms/status
+  - watsondiscoverycnms/finalizers
+  - watsondiscoverycoreapis
+  - watsondiscoverycoreapis/status
+  - watsondiscoverycoreapis/finalizers
+  - watsondiscoverydfs
+  - watsondiscoverydfs/status
+  - watsondiscoverydfs/finalizers
+  - watsondiscoveryenrichments
+  - watsondiscoveryenrichments/status
+  - watsondiscoveryenrichments/finalizers
+  - watsondiscoveryfoundations
+  - watsondiscoveryfoundations/status
+  - watsondiscoveryfoundations/finalizers
+  - watsondiscoveryhdps
+  - watsondiscoveryhdps/status
+  - watsondiscoveryhdps/finalizers
+  - watsondiscoveryingestions
+  - watsondiscoveryingestions/status
+  - watsondiscoveryingestions/finalizers
+  - watsondiscoverymigrations
+  - watsondiscoverymigrations/status
+  - watsondiscoverymigrations/finalizers
+  - watsondiscoveryorchestrators
+  - watsondiscoveryorchestrators/status
+  - watsondiscoveryorchestrators/finalizers
+  - watsondiscoverypgbouncers
+  - watsondiscoverypgbouncers/status
+  - watsondiscoverypgbouncers/finalizers
+  - watsondiscoveryqueries
+  - watsondiscoveryqueries/status
+  - watsondiscoveryqueries/finalizers
+  - watsondiscoverysdus
+  - watsondiscoverysdus/status
+  - watsondiscoverysdus/finalizers
+  - watsondiscoverystatelessapis
+  - watsondiscoverystatelessapis/status
+  - watsondiscoverystatelessapis/finalizers
+  - watsondiscoverytoolings
+  - watsondiscoverytoolings/status
+  - watsondiscoverytoolings/finalizers
+  - watsondiscoverywires
+  - watsondiscoverywires/status
+  - watsondiscoverywires/finalizers
+  - watsondiscoverywksmls
+  - watsondiscoverywksmls/status
+  - watsondiscoverywksmls/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wos.cpd.ibm.com
+  resources:
+  - woservice
+  - woservices
+  - woservices/status
+  - woservices/finalizers
+  - woserviceconfig
+  - woserviceconfigs
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - speech.watson.ibm.com
+  resources:
+  - watsonspeeches
+  - watsonspeeches/status
+  - watsonspeeches/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - operator.ibm.com
+  resources:
+  - operandrequests
+  - ibmlicensings
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - certmanager.k8s.io
+  - cert-manager.io
+  resources:
+  - issuers
+  - certificates
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - watsonxai.cpd.ibm.com
+  resources:
+  - watsonxai
+  - watsonxai/status
+  - watsonxai/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - datagovernor.ibm.com
+  - default.cognitivedata
+  resources:
+  - datagovernorarchives
+  - datagovernorarchives/status
+  - datagovernorhealthchecks
+  - datagovernorhealthchecks/status
+  - dataexhaustkubes
+  - dataexhaustkubes/status
+  - datagovernoroverrides
+  - datagovernoroverrides/status
+  - datagovernors
+  - datagovernors/status
+  - datagovernors/finalizers
+  - datagovernore2es
+  - datagovernore2es/status
+  - datagovernortenantoverrides
+  - datagovernortenantoverrides/status
+  - datagovernortenants
+  - datagovernortenants/status
+  - datagovernortenants/finalizers
+  - estemplates
+  - estemplates/status
+  - eventstreamstopics
+  - eventstreamstopics/status
+  - iamservices
+  - iamservices/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - assistant.watson.ibm.com
+  resources:
+  - temporarypatches
+  - temporarypatches/status
+  - temporarypatches/finalizers
+  - watsonassistantanalytics
+  - watsonassistantanalytics/status
+  - watsonassistantanalytics/finalizers
+  - watsonassistantautolearns
+  - watsonassistantautolearns/status
+  - watsonassistantautolearns/finalizers
+  - watsonassistantclus
+  - watsonassistantclus/status
+  - watsonassistantclus/finalizers
+  - watsonassistantcluruntimes
+  - watsonassistantcluruntimes/status
+  - watsonassistantcluruntimes/finalizers
+  - watsonassistantclutrainings
+  - watsonassistantclutrainings/status
+  - watsonassistantclutrainings/finalizers
+  - watsonassistantdialogs
+  - watsonassistantdialogs/status
+  - watsonassistantdialogs/finalizers
+  - watsonassistantdvts
+  - watsonassistantdvts/status
+  - watsonassistantdvts/finalizers
+  - watsonassistantintegrations
+  - watsonassistantintegrations/status
+  - watsonassistantintegrations/finalizers
+  - watsonassistantrecommends
+  - watsonassistantrecommends/status
+  - watsonassistantrecommends/finalizers
+  - watsonassistants
+  - watsonassistants/status
+  - watsonassistants/finalizers
+  - watsonassistantstores
+  - watsonassistantstores/status
+  - watsonassistantstores/finalizers
+  - watsonassistantuis
+  - watsonassistantuis/status
+  - watsonassistantuis/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wca.cpd.ibm.com
+  resources:
+  - wcabases
+  - wcabases/status
+  - wcabases/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wca.cpd.ibm.com
+  resources:
+  - wcas
+  - wcas/status
+  - wcas/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wca.cpd.ibm.com
+  resources:
+  - wcaansibles
+  - wcaansibles/status
+  - wcaansibles/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wca.cpd.ibm.com
+  resources:
+  - wcazs
+  - wcazs/status
+  - wcazs/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wca.cpd.ibm.com
+  resources:
+  - codeexplanations
+  - codeexplanations/status
+  - codeexplanations/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - watsonxdata.ibm.com
+  resources:
+  - wxds
+  - wxds/status
+  - wxds/finalizers
+  - wxdaddons
+  - wxdaddons/status
+  - wxdaddons/finalizers
+  - wxdengines
+  - wxdengines/status
+  - wxdengines/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - watsonxgovernance.cpd.ibm.com
+  resources:
+  - watsonxgovernance
+  - watsonxgovernance/status
+  - watsonxgovernance/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - wo.watsonx.ibm.com
+  resources:
+  - watsonxorchestrates
+  - watsonxorchestrates/finalizers
+  - watsonxorchestrates/status
+  - digitalemployees
+  - wocomponentservices
+  - wocomponentservices/finalizers
+  - wocomponentservices/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - apidiscovery.watsonx.ibm.com
+  resources:
+  - apis
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - uab.ba.ibm.com
+  resources:
+  - uabautomationdecisionservices
+  - uabwfservices
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - watsonx.ibm.com
+  resources:
+  - documentprocessings
+  - documentprocessings/status
+  - documentprocessings/finalizers
+  - documentprocessingpatches
+  - documentprocessingpatches/status
+  - documentprocessingpatches/finalizers
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - saas.ba.ibm.com
+  resources:
+  - workflowservers
+  - workflowservers/finalizers
+  - workflowservers/status
+  - wfpsauthorings
+  - wfpsauthorings/finalizers
+  - wfpsauthorings/status
+  - wfpsruntimes
+  - wfpsruntimes/finalizers
+  - wfpsruntimes/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - zen.cpd.ibm.com
+  resources:
+  - zenservices
+  - zenservices/status
+  - zenextensions
+  - zenextensions/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+  - watch
+- apiGroups:
+  - ''
+  - project.openshift.io
+  resources:
+  - projects
+  verbs:
+  - list
+  - get
+  - watch
+- apiGroups:
+  - ''
+  resources:
+  - namespaces
+  verbs:
+  - list
+  - get
+  - watch
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  - services
+  - serviceaccounts
+  verbs:
+  - deletecollection
+  - update
+  - get
+  - delete
+  - watch
+  - patch
+  - list
+  - create
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - deletecollection
+  - update
+  - get
+  - delete
+  - watch
+  - patch
+  - list
+  - create
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - deletecollection
+  - update
+  - get
+  - delete
+  - watch
+  - patch
+  - list
+  - create
+- apiGroups:
+  - packages.operators.coreos.com
+  resources:
+  - packagemanifests
+  verbs:
+  - list
+  - get
+  - watch
+- apiGroups:
+  - operators.coreos.com
+  resources:
+  - catalogsources
+  - clusterserviceversions
+  - installplans
+  - operatorgroups
+  - subscriptions
+  verbs:
+  - deletecollection
+  - update
+  - get
+  - delete
+  - watch
+  - patch
+  - list
+  - create
+- apiGroups:
+  - rbac.authorization.k8s.io
+  - authorization.openshift.io
+  resources:
+  - rolebindings
+  - roles
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch

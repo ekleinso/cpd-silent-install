@@ -119,8 +119,6 @@ export PRIVATE_REGISTRY_USER="<your private registry user>"
 export PRIVATE_REGISTRY_PASSWORD="<your private registry password>"
 
 envsubst < configmap-vars.yaml | oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f -
-
-oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f configmap.yaml
 ```
 8. Update value for ***storageClassName*** in all of the entries in **storage.yaml**.
 ```shell

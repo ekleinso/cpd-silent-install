@@ -126,9 +126,9 @@ oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f configmap.yaml
 ```shell
 envsubst < storage.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-9. Create secrets
+9. Create configmaps. Installation scripts/options are in **configmap.yaml** update for you implementation
 ```shell
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f secret.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f configmap.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-00.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-01.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-02.yaml
@@ -153,11 +153,15 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-20.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-21.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
 ```
-10. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
+10. Create secrets
+```shell
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f secret.yaml
+```
+11. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
 ```shell
 envsubst < 1-pod-shared.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-11. Monitor install log and/or check pod status until it is completed
+12. Monitor install log and/or check pod status until it is completed
 ```shell
 oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-shared
 ```
@@ -165,11 +169,11 @@ or
 ```shell
 oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-shared
 ```
-12. Update ***spec.containers[0].image*** in **2-pod-cpd.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
+13. Update ***spec.containers[0].image*** in **2-pod-cpd.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
 ```shell
 envsubst < 2-pod-cpd.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-13. Monitor install log and/or check pod status until it is completed
+14. Monitor install log and/or check pod status until it is completed
 ```shell
 oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-install
 ```

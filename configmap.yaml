@@ -44,8 +44,9 @@ data:
       fi
     else
       if [ -z "${PRIVATE_REGISTRY_USER}" ] && [ -z "${PRIVATE_REGISTRY_PASSWORD}" ]; then
-        echo "You must configure credentials for your private registry"
-        exit 1
+          DOCKER_USERNAME=using_global
+          DOCKER_PASSWORD=using_global
+          DOCKER_SERVER=using_global
       else
         if [ "${PRIVATE_REGISTRY_USER}" == "global" ]; then
           DOCKER_USERNAME=using_global

@@ -110,97 +110,97 @@ spec:
         defaultMode: 0755
         name: cpd-install-options
     - name: case-00
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-00
+        name: case-00
     - name: case-01
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-01
+        name: case-01
     - name: case-02
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-02
+        name: case-02
     - name: case-03
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-03
+        name: case-03
     - name: case-04
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-04
+        name: case-04
     - name: case-05
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-05
+        name: case-05
     - name: case-06
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-06
+        name: case-06
     - name: case-07
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-07
+        name: case-07
     - name: case-08
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-08
+        name: case-08
     - name: case-09
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-09
+        name: case-09
     - name: case-10
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-10
+        name: case-10
     - name: case-11
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-11
+        name: case-11
     - name: case-12
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-12
+        name: case-12
     - name: case-13
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-13
+        name: case-13
     - name: case-14
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-14
+        name: case-14
     - name: case-15
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-15
+        name: case-15
     - name: case-16
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-16
+        name: case-16
     - name: case-17
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-17
+        name: case-17
     - name: case-18
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-18
+        name: case-18
     - name: case-19
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-19
+        name: case-19
     - name: case-20
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-20
+        name: case-20
     - name: case-21
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-21
+        name: case-21
     - name: case-22
-      secret:
+      configMap:
         defaultMode: 0755
-        secretName: case-22
+        name: case-22
   securityContext:
     fsGroup: 0
     runAsNonRoot: true

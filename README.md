@@ -18,7 +18,7 @@ oc login
 ```
 2. Clone repo to the client workstation or download as a zip from git.
 ```shell
-git clone -b v531 https://github.com/ekleinso/cpd-silent-install.git
+git clone -b v531-1 https://github.com/ekleinso/cpd-silent-install.git
 ```
 3. Change into directory ***cpd-silent-install***.
 ```shell
@@ -72,7 +72,7 @@ oc login
 ```
 2. Clone repo to the client workstation or download as a zip from git.
 ```shell
-git clone -b v531 https://github.com/ekleinso/cpd-silent-install.git
+git clone -b v531-1 https://github.com/ekleinso/cpd-silent-install.git
 ```
 3. Change into directory ***cpd-silent-install***.
 ```shell
@@ -124,9 +124,15 @@ envsubst < configmap-vars.yaml | oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```shell
 envsubst < storage.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-9. Create configmaps. Installation scripts/options are in **configmap.yaml** update for you implementation
+9. Modify installation scripts/options found in the scripts directory for you implementation requirements then create ConfigMap
 ```shell
-oc create -n ${PROJECT_CPD_INST_OPERANDS} -f configmap.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} cm cpd-install-options \
+--from-file=install-options.yml=scripts/install-options.yml \
+--from-file=cpd_shared.sh=scripts/cpd_shared.sh \
+--from-file=cpd_install.sh=scripts/cpd_install.sh
+```
+10. Create ConfigMaps for the case file
+```shell
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-00.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-01.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-02.yaml
@@ -151,15 +157,15 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-20.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-21.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
 ```
-10. Create secrets
+11. Create secrets
 ```shell
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f secret.yaml
 ```
-11. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
+12. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
 ```shell
 envsubst < 1-pod-shared.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-12. Monitor install log and/or check pod status until it is completed
+13. Monitor install log and/or check pod status until it is completed
 ```shell
 oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-shared
 ```
@@ -167,11 +173,15 @@ or
 ```shell
 oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-shared
 ```
-13. Update ***spec.containers[0].image*** in **2-pod-cpd.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
+14. (Optional) If pod completes successfully it is safe to cleanup *case-* ConfigMaps
+```shell
+oc delete -n ${PROJECT_CPD_INST_OPERANDS} ConfigMap case-00 case-01 case-02 case-03 case-04 case-05 case-06 case-07 case-08 case-09 case-10 case-11 case-12 case-13 case-14 case-15 case-16 case-17 case-18 case-19 case-20 case-21 case-22
+```
+15. Update ***spec.containers[0].image*** in **2-pod-cpd.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
 ```shell
 envsubst < 2-pod-cpd.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-14. Monitor install log and/or check pod status until it is completed
+16. Monitor install log and/or check pod status until it is completed
 ```shell
 oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-install
 ```

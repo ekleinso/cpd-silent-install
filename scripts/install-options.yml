@@ -1,0 +1,8 @@
+################################################################################
+# IBM Knowledge Catalog parameters
+################################################################################
+non_olm:
+  wkc:
+    enableKnowledgeGraph: True
+    useFDB: True
+    enableDataQuality: True

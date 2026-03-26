@@ -17,7 +17,7 @@ spec:
           name: cpd-token
           key: token
     imagePullPolicy: Always
-    image: ${IMAGE_PULL_PREFIX}/cpopen/cpd/olm-utils-v4@sha256:3f03ae78e4101a63c089980ffb5eef0db51b8897afd44b609ce409897e5f0827
+    image: ${IMAGE_PULL_PREFIX}/cpopen/cpd/olm-utils-v4@sha256:ba54f41b6034e770d12af26165e701e35c599a9dfbe39ce6332e0e206493ed8b
     command: ["/bin/sh", "-c"]
     args: 
       - "/opt/ansible/cpd_install.sh"

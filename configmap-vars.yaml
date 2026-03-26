@@ -22,5 +22,4 @@ data:
   OCP_URL: "kubernetes.default.svc.cluster.local"
   IMAGE_PULL_SECRET: "ibm-entitlement-key"
   IMAGE_PULL_PREFIX: "${IMAGE_PULL_PREFIX}"
-  OLM_UTILS_IMAGE: "${IMAGE_PULL_PREFIX}/cpopen/cpd/olm-utils-v4@sha256:ba54f41b6034e770d12af26165e701e35c599a9dfbe39ce6332e0e206493ed8b"
-  
+  OLM_UTILS_IMAGE: "${IMAGE_PULL_PREFIX}/cpopen/cpd/olm-utils-v4@sha256:4d55bcf934f282031d786d29c9468efb042b7a98a0cddd1887eb397b1ad6bb20"

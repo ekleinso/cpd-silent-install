@@ -105,7 +105,7 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} cm cpd-silent-limitranges --from-liter
 ```shell
 oc create -n ${PROJECT_CPD_INST_OPERANDS} cm cpd-silent-networkpolicy --from-literal=networkpolicy="$(envsubst < networkpolicy.yaml)"
 ```
-5. Update variables in **configmap-vars.yaml** for your environment. For internal repo **IMAGE_PULL_PREFIX** would be something like *registry.example.local/docker* 
+5. Update variables in **configmap.yaml** for your environment. For internal repo **IMAGE_PULL_PREFIX** would be something like *registry.example.local/docker* 
 ```shell
 export STG_CLASS_BLOCK="managed-nfs-storage"
 export STG_CLASS_FILE="managed-nfs-storage"
@@ -118,7 +118,7 @@ export IBM_ENTITLEMENT_KEY="<your entitlement key>"
 export PRIVATE_REGISTRY_USER="<your private registry user>"
 export PRIVATE_REGISTRY_PASSWORD="<your private registry password>"
 
-envsubst < configmap-vars.yaml | oc apply -n ${PROJECT_CPD_INST_OPERANDS} -f -
+envsubst < configmap.yaml | oc apply -f -
 ```
 8. Update value for ***storageClassName*** in all of the entries in **storage.yaml**.
 ```shell

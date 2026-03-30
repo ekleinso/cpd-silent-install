@@ -177,15 +177,11 @@ oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-shared
 ```shell
 oc delete -n ${PROJECT_CPD_INST_OPERANDS} ConfigMap case-00 case-01 case-02 case-03 case-04 case-05 case-06 case-07 case-08 case-09 case-10 case-11 case-12 case-13 case-14 case-15 case-16 case-17 case-18 case-19 case-20 case-21 case-22
 ```
-15. Update ***spec.containers[0].image*** in **2-pod-cpd.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
+15. Update ***spec.containers[0].image*** in **2-cpd-install.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke Cloud Pak for Data install
 ```shell
-envsubst < 2-pod-cpd.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
+envsubst < 2-cpd-install.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
-16. Monitor install log and/or check pod status until it is completed
+16. Monitor job status until it is completed
 ```shell
-oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-install
-```
-or 
-```shell
-oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-install
+oc -n ${PROJECT_CPD_INST_OPERANDS} get job -l app=cpd-install -w
 ```

@@ -23,30 +23,61 @@ if [ "${IMAGE_PULL_PREFIX}" == "icr.io" ]; then
     echo "You must configure an IBM_ENTITLEMENT_KEY"
     exit 1
   else
-    DOCKER_USERNAME=cp
-    DOCKER_PASSWORD=${IBM_ENTITLEMENT_KEY}
-    DOCKER_SERVER=${IMAGE_PULL_PREFIX}
+    IMAGE_PULL_CREDENTIALS=$(echo -n "cp:${IBM_ENTITLEMENT_KEY}" | base64 -w 0)
+    cat <<EOF > /tmp/work/dockerconfig.json 
+    {
+      "auths": {
+        "cp.icr.io": {
+          "auth": "${IMAGE_PULL_CREDENTIALS}"
+        },
+        "icr.io":{
+          "auth": "${IMAGE_PULL_CREDENTIALS}"
+        }
+      }
+    }
+    EOF
   fi
 else
   if [ -z "${PRIVATE_REGISTRY_USER}" ] && [ -z "${PRIVATE_REGISTRY_PASSWORD}" ]; then
-      DOCKER_USERNAME=using_global
-      DOCKER_PASSWORD=using_global
-      DOCKER_SERVER=using_global
+      IMAGE_PULL_CREDENTIALS=$(echo -n "using_global:using_global" | base64 -w 0)
+      cat <<EOF > /tmp/work/dockerconfig.json 
+      {
+        "auths": {
+          "using_global": {
+            "auth": "${IMAGE_PULL_CREDENTIALS}"
+          }
+        }
+      }
+      EOF
   else
     if [ "${PRIVATE_REGISTRY_USER}" == "global" ]; then
-      DOCKER_USERNAME=using_global
-      DOCKER_PASSWORD=using_global
-      DOCKER_SERVER=using_global
+      IMAGE_PULL_CREDENTIALS=$(echo -n "using_global:using_global" | base64 -w 0)
+      cat <<EOF > /tmp/work/dockerconfig.json 
+      {
+        "auths": {
+          "using_global": {
+            "auth": "${IMAGE_PULL_CREDENTIALS}"
+          }
+        }
+      }
+      EOF
     else
-      DOCKER_USERNAME=${PRIVATE_REGISTRY_USER}
-      DOCKER_PASSWORD=${PRIVATE_REGISTRY_PASSWORD}
-      DOCKER_SERVER=${IMAGE_PULL_PREFIX%/*}
+      IMAGE_PULL_CREDENTIALS=$(echo -n "${PRIVATE_REGISTRY_USER}:${PRIVATE_REGISTRY_PASSWORD}" | base64 -w 0)
+      cat <<EOF > /tmp/work/dockerconfig.json 
+      {
+        "auths": {
+          "${IMAGE_PULL_PREFIX%/*}": {
+            "auth": "${IMAGE_PULL_CREDENTIALS}"
+          }
+        }
+      }
+      EOF
     fi
   fi
 fi
-oc create secret docker-registry ${IMAGE_PULL_SECRET} --docker-username=${DOCKER_USERNAME} --docker-password=${DOCKER_PASSWORD} --docker-server=${DOCKER_SERVER} --namespace=${PROJECT_SCHEDULING_SERVICE}
-oc create secret docker-registry ${IMAGE_PULL_SECRET} --docker-username=${DOCKER_USERNAME} --docker-password=${DOCKER_PASSWORD} --docker-server=${DOCKER_SERVER} --namespace=${PROJECT_CPD_INST_OPERATORS}
-oc create secret docker-registry ${IMAGE_PULL_SECRET} --docker-username=${DOCKER_USERNAME} --docker-password=${DOCKER_PASSWORD} --docker-server=${DOCKER_SERVER} --namespace=${PROJECT_CPD_INST_OPERANDS}
+oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_SCHEDULING_SERVICE}
+oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERATORS}
+oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERANDS}
 ################################################################################
 # Install License Manager and Scheduler
 ################################################################################

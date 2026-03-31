@@ -18512,7 +18512,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18562,7 +18562,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: subscriptions.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: subscriptions.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18584,7 +18584,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: imagecatalogs.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: imagecatalogs.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18606,7 +18606,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: publications.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: publications.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18628,7 +18628,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: clusterimagecatalogs.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: clusterimagecatalogs.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18650,7 +18650,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: databases.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: databases.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18672,7 +18672,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: clusters.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: clusters.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18694,7 +18694,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: poolers.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: poolers.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18716,7 +18716,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: scheduledbackups.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: scheduledbackups.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18738,7 +18738,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: backups.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: backups.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18760,7 +18760,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18772,11 +18772,11 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: postgresql-operator-manager
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 ---
 # Source: postgresql-cluster-scoped/templates/02-cluster-MutatingWebhook.yaml
 # Copyright 2021 EnterpriseDB Corporation
@@ -18814,9 +18814,9 @@ subjects:
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: postgresql-operator-mutating-webhook-configuration-ibm-operators
+  name: postgresql-operator-mutating-webhook-configuration-${PROJECT_CPD_INST_OPERATORS}
   annotations:
-    cert-manager.io/inject-ca-from: ibm-operators/edb-webhook-cert
+    cert-manager.io/inject-ca-from: ${PROJECT_CPD_INST_OPERATORS}/edb-webhook-cert
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18831,7 +18831,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-backup
       port: 443
   failurePolicy: Fail
@@ -18841,7 +18841,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -18858,7 +18858,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-cluster
       port: 443
   failurePolicy: Fail
@@ -18868,7 +18868,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -18885,7 +18885,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-database
       port: 443
   failurePolicy: Fail
@@ -18895,7 +18895,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -18912,7 +18912,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-scheduledbackup
       port: 443
   failurePolicy: Fail
@@ -18922,7 +18922,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -18939,7 +18939,7 @@ webhooks:
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: postgresql-operator-validating-webhook-configuration-ibm-operators
+  name: postgresql-operator-validating-webhook-configuration-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -18949,14 +18949,14 @@ metadata:
     app.kubernetes.io/version: "1.25.5"
     app.kubernetes.io/managed-by: Helm
   annotations:
-    cert-manager.io/inject-ca-from: ibm-operators/edb-webhook-cert
+    cert-manager.io/inject-ca-from: ${PROJECT_CPD_INST_OPERATORS}/edb-webhook-cert
 webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-backup
       port: 443
   failurePolicy: Fail
@@ -18966,7 +18966,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -18983,7 +18983,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-cluster
       port: 443
   failurePolicy: Fail
@@ -18993,7 +18993,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -19010,7 +19010,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-scheduledbackup
       port: 443
   failurePolicy: Fail
@@ -19020,7 +19020,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -19037,7 +19037,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-database
       port: 443
   failurePolicy: Fail
@@ -19047,7 +19047,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -19064,7 +19064,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-pooler
       port: 443
   failurePolicy: Fail
@@ -19074,7 +19074,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
     - apiGroups:
         - postgresql.k8s.enterprisedb.io
@@ -20091,8 +20091,8 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ibm-iam-operator-ibm-operators
-  namespace: ibm-operators
+  name: ibm-iam-operator-${PROJECT_CPD_INST_OPERATORS}
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
   labels:
     app.kubernetes.io/instance: ibm-iam-operator
     app.kubernetes.io/managed-by: ibm-iam-operator
@@ -20121,16 +20121,16 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: ibm-iam-operator-ibm-operators
+  name: ibm-iam-operator-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: ibm-iam-operator-cluster-scoped
 subjects:
 - kind: ServiceAccount
   name: ibm-iam-operator
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 roleRef:
     kind: ClusterRole
-    name: ibm-iam-operator-ibm-operators
+    name: ibm-iam-operator-${PROJECT_CPD_INST_OPERATORS}
     apiGroup: rbac.authorization.k8s.io
 ---
 # Source: ibm-common-service-operator-cluster-scoped/templates/cs-operator-crd.yaml
@@ -24475,7 +24475,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata: 
-  name: ibm-common-service-operator-ibm-operators
+  name: ibm-common-service-operator-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: ibm-common-service-operator-cluster-scoped
 rules:
@@ -24491,17 +24491,17 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata: 
-  name: ibm-common-service-operator-ibm-operators
+  name: ibm-common-service-operator-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: ibm-common-service-operator-cluster-scoped
 roleRef: 
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: ibm-common-service-operator-ibm-operators
+  name: ibm-common-service-operator-${PROJECT_CPD_INST_OPERATORS}
 subjects:   
   - kind: ServiceAccount
     name: ibm-common-service-operator
-    namespace: ibm-operators
+    namespace: ${PROJECT_CPD_INST_OPERATORS}
 ---
 # Source: ibm-namespace-scope-operator-cluster-scoped/templates/00-crd.yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -24641,7 +24641,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibm-namespace-scope-operator-ibm-operators
+  name: ibm-namespace-scope-operator-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: ibm-namespace-scope-operator-cluster-scoped
 rules:
@@ -24670,17 +24670,17 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibm-namespace-scope-operator-ibm-operators
+  name: ibm-namespace-scope-operator-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: ibm-namespace-scope-operator-cluster-scoped
 subjects:
   - kind: ServiceAccount
     name: ibm-namespace-scope-operator
-    namespace: ibm-operators
+    namespace: ${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ibm-namespace-scope-operator-ibm-operators
+  name: ibm-namespace-scope-operator-${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'ibm_usage_metering'
 ---
 # Source: ibm-usage-metering-cluster-scoped/templates/crd-ibmservicemeterdefinition.yaml
@@ -25457,7 +25457,7 @@ spec:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibmcpds.cpd.ibm.com-v1-ibm-operators-edit
+  name: ibmcpds.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: cpd-platform-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -30444,7 +30444,7 @@ metadata:
     component-id: opencontent-opensearch-cluster-scoped
     icpdsupport/addOnId: 'opencontent-opensearch'
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: clusters.opensearch.cloudpackopen.ibm.com-v1-ibm-operators-edit
+  name: clusters.opensearch.cloudpackopen.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - opensearch.cloudpackopen.ibm.com
@@ -31956,7 +31956,7 @@ metadata:
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: ccs
-  name: ccs.ccs.cpd.ibm.com-v1-ibm-operators-edit
+  name: ccs.ccs.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ccs.cpd.ibm.com
@@ -32103,7 +32103,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: factsheet.factsheet.cpd.ibm.com-v1-ibm-operators-edit
+  name: factsheet.factsheet.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: factsheet-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -32509,7 +32509,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: spark
     component-id: analyticsengine-cluster-scoped
-  name: ae.cpd.ibm.com-v1-ibm-operators-edit
+  name: ae.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ae.cpd.ibm.com
@@ -33102,7 +33102,7 @@ metadata:
     component-id: cognos-analytics-cluster-scoped
     icpdsupport/addOnId: cognos-analytics-app
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: caservices.ca.cpd.ibm.com-v1-ibm-operators-edit
+  name: caservices.ca.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ca.cpd.ibm.com
@@ -33123,7 +33123,7 @@ metadata:
     component-id: cognos-analytics-cluster-scoped
     icpdsupport/addOnId: cognos-analytics-app
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: caserviceinstances.ca.cpd.ibm.com-v1-ibm-operators-edit
+  name: caserviceinstances.ca.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ca.cpd.ibm.com
@@ -33367,7 +33367,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: rediscps.redis.ibm.com-v1-ibm-operators-edit
+  name: rediscps.redis.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: ibm-redis-cp-cluster-scoped
     icpdsupport/addOnId: ibm-redis-cp
@@ -33831,7 +33831,7 @@ metadata:
     component-id: dashboard-cluster-scoped
     icpdsupport/addOnId: cognos-dashboard
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: dashboardservices.dashboard.cpd.ibm.com-v1-ibm-operators-edit
+  name: dashboardservices.dashboard.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - dashboard.cpd.ibm.com
@@ -33954,7 +33954,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: dp-cluster-role-ibm-operators-edit
+  name: dp-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: dp-cluster-scoped
     icpdsupport/addOnId: data-privacy
@@ -35338,7 +35338,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: wkc-cluster-role-ibm-operators-edit
+  name: wkc-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: wkc-cluster-scoped
     icpdsupport/addOnId: wkc
@@ -35491,7 +35491,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: datarefinery.datarefinery.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: datarefinery.datarefinery.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: datarefinery-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -36209,7 +36209,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: dataproduct.data-product.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: dataproduct.data-product.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: dataproduct-cluster-scoped
     icpdsupport/addOnId: dataproduct
@@ -36522,7 +36522,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: replicationservices.replication.cpd.ibm.com-v1-ibm-operators-edit
+  name: replicationservices.replication.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     icpdsupport/app: "operator"
     icpdsupport/module: "operator"
@@ -36551,7 +36551,7 @@ metadata:
     icpdsupport/addOnId: data-replication
     component-id: replication-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: replicationserviceinstances.replication.cpd.ibm.com-v1-ibm-operators-edit
+  name: replicationserviceinstances.replication.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - replication.cpd.ibm.com
@@ -36574,7 +36574,7 @@ metadata:
     icpdsupport/addOnId: data-replication
     component-id: replication-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: replicationextensions.replication.cpd.ibm.com-v1-ibm-operators-edit
+  name: replicationextensions.replication.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - replication.cpd.ibm.com
@@ -36824,7 +36824,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata: 
-  name: datastage.ds.cpd.ibm.com-v1-ibm-operators-edit
+  name: datastage.ds.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     component-id: datastage-ent-cluster-scoped
@@ -37080,7 +37080,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata: 
-  name: datastage.ds.cpd.ibm.com-v1-ibm-operators-edit
+  name: datastage.ds.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     component-id: datastage-ent-plus-cluster-scoped
@@ -50797,7 +50797,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: db2u-operator-ibm-operators
+  name: db2u-operator-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
@@ -50844,7 +50844,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2uclusters.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: db2uclusters.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50866,7 +50866,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2uinstances.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: db2uinstances.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50888,7 +50888,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2uengines.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: db2uengines.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50910,7 +50910,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2uhadrs.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: db2uhadrs.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50932,7 +50932,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: formations.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: formations.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50954,7 +50954,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: bigsqls.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: bigsqls.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50976,7 +50976,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: formationlocks.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: formationlocks.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -50998,7 +50998,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2ubackups.db2ubnr.databases.ibm.com-v1-ibm-operators-edit
+  name: db2ubackups.db2ubnr.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2ubnr.databases.ibm.com
@@ -51020,7 +51020,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2urestores.db2ubnr.databases.ibm.com-v1-ibm-operators-edit
+  name: db2urestores.db2ubnr.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2ubnr.databases.ibm.com
@@ -51042,7 +51042,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
-  name: db2ulogstreams.db2ulog.databases.ibm.com-v1-ibm-operators-edit
+  name: db2ulogstreams.db2ulog.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - db2ulog.databases.ibm.com
@@ -51060,7 +51060,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: db2u-day2-ops-manager-role-ibm-operators
+  name: db2u-day2-ops-manager-role-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
@@ -51134,35 +51134,35 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: db2u-operator-rolebinding-ibm-operators
+  name: db2u-operator-rolebinding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: db2u-operator-ibm-operators
+  name: db2u-operator-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: db2u-operator
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 ---
 # Source: db2u-cluster-scoped/templates/00-cluster-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: db2u-day2-ops-manager-clusterrolebinding-ibm-operators
+  name: db2u-day2-ops-manager-clusterrolebinding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: db2u-cluster-scoped
     icpdsupport/addOnId: databases
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: db2u-day2-ops-manager-role-ibm-operators
+  name: db2u-day2-ops-manager-role-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: db2u-day2-ops-controller-manager
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'dmc'
 ---
 # Source: dmc-cluster-scoped/templates/00-crd.yaml
@@ -51416,7 +51416,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: dmc-clusterrole-ibm-operators
+  name: dmc-clusterrole-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: dmc-cluster-scoped
     app.kubernetes.io/component: operator
@@ -51464,7 +51464,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: dmcs.dmc.databases.ibm.com-v1-ibm-operators-edit
+  name: dmcs.dmc.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: dmc-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -51488,7 +51488,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: dmcaddons.dmc.databases.ibm.com-v1-ibm-operators-admin
+  name: dmcaddons.dmc.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-admin
   labels:
     component-id: dmc-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
@@ -51514,7 +51514,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: dmc-clusterrolebinding-ibm-operators
+  name: dmc-clusterrolebinding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: dmc-cluster-scoped
     app.kubernetes.io/instance: dmc
@@ -51524,10 +51524,10 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: dmc-operator-sa
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   kind: ClusterRole
-  name: dmc-clusterrole-ibm-operators
+  name: dmc-clusterrole-${PROJECT_CPD_INST_OPERATORS}
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: dmc-cluster-scoped/templates/01-cluster-rbac.yaml
@@ -51622,7 +51622,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: dvservices.db2u.databases.ibm.com-v1-admin-ibm-operators
+  name: dvservices.db2u.databases.ibm.com-v1-admin-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: dv-cluster-scoped
     icpdsupport/addOnId: dv
@@ -51644,7 +51644,7 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: dvservices.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: dvservices.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: dv-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -51669,7 +51669,7 @@ metadata:
     component-id: dv-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     icpdsupport/addOnId: dv
-  name: dvservices.db2u.databases.ibm.com-v1-view-ibm-operators
+  name: dvservices.db2u.databases.ibm.com-v1-view-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -51688,7 +51688,7 @@ metadata:
     component-id: dv-cluster-scoped
     icpdsupport/addOnId: dv
     rbac.authorization.k8s.io/aggregate-to-view: "true"
-  name: dvservices.db2u.databases.ibm.com-v1-crdview-ibm-operators
+  name: dvservices.db2u.databases.ibm.com-v1-crdview-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - apiextensions.k8s.io
@@ -51782,7 +51782,7 @@ metadata:
   labels:
     component-id: db2oltp-cluster-scoped
     icpdsupport/addOnId: db2oltp
-  name: db2oltpservice-operator-cluster-role-ibm-operators
+  name: db2oltpservice-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - ''
@@ -51806,7 +51806,7 @@ metadata:
     component-id: db2oltp-cluster-scoped
     icpdsupport/addOnId: db2oltp
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: db2oltpservices.databases.cpd.ibm.com-v1-ibm-operators-edit
+  name: db2oltpservices.databases.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - databases.cpd.ibm.com
@@ -51827,15 +51827,15 @@ metadata:
   labels:
     component-id: db2oltp-cluster-scoped
     icpdsupport/addOnId: db2oltp
-  name: db2oltpservice-operator-cluster-role-binding-ibm-operators
+  name: db2oltpservice-operator-cluster-role-binding-${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: db2oltpservice-operator-cluster-role-ibm-operators
+  name: db2oltpservice-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: ibm-db2oltp-cp4d-operator-db2u-cp4d-operator
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'bigsql'
 ---
 # Source: bigsql-cluster-scoped/templates/00-crd.yaml
@@ -51931,7 +51931,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: bigsqlservices.db2u.databases.ibm.com-v1-admin-ibm-operators
+  name: bigsqlservices.db2u.databases.ibm.com-v1-admin-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: bigsql-cluster-scoped
     icpdsupport/addOnId: bigsql
@@ -51953,7 +51953,7 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: bigsqlservices.db2u.databases.ibm.com-v1-ibm-operators-edit
+  name: bigsqlservices.db2u.databases.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: bigsql-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -51978,7 +51978,7 @@ metadata:
     component-id: bigsql-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     icpdsupport/addOnId: bigsql
-  name: bigsqlservices.db2u.databases.ibm.com-v1-view-ibm-operators
+  name: bigsqlservices.db2u.databases.ibm.com-v1-view-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - db2u.databases.ibm.com
@@ -51997,7 +51997,7 @@ metadata:
     component-id: bigsql-cluster-scoped
     icpdsupport/addOnId: bigsql
     rbac.authorization.k8s.io/aggregate-to-view: "true"
-  name: bigsqlservices.db2u.databases.ibm.com-v1-crdview-ibm-operators
+  name: bigsqlservices.db2u.databases.ibm.com-v1-crdview-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - apiextensions.k8s.io
@@ -52091,7 +52091,7 @@ metadata:
   labels:
     component-id: db2wh-cluster-scoped
     icpdsupport/addOnId: db2wh
-  name: db2whservice-operator-cluster-role-ibm-operators
+  name: db2whservice-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - ''
@@ -52115,7 +52115,7 @@ metadata:
     component-id: db2wh-cluster-scoped
     icpdsupport/addOnId: db2wh
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: db2whservices.databases.cpd.ibm.com-v1-ibm-operators-edit
+  name: db2whservices.databases.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - databases.cpd.ibm.com
@@ -52136,15 +52136,15 @@ metadata:
   labels:
     component-id: db2wh-cluster-scoped
     icpdsupport/addOnId: db2wh
-  name: db2whservice-operator-cluster-role-binding-ibm-operators
+  name: db2whservice-operator-cluster-role-binding-${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: db2whservice-operator-cluster-role-ibm-operators
+  name: db2whservice-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: ibm-db2wh-cp4d-operator-db2u-cp4d-operator
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'ws_runtimes'
 ---
 # Source: ws-runtimes-cluster-scoped/templates/00-crd.yaml
@@ -52279,7 +52279,7 @@ metadata:
     component-id: ws-runtimes-cluster-scoped
     icpdsupport/addOnId: ws
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: notebookruntimes.ws.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: notebookruntimes.ws.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ws.cpd.ibm.com
@@ -52422,7 +52422,7 @@ metadata:
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: ws
-  name: ws.ws.cpd.ibm.com-v1-ibm-operators-edit
+  name: ws.ws.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ws.cpd.ibm.com
@@ -52563,7 +52563,7 @@ metadata:
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: wml
-  name: wmlbases.wml.cpd.ibm.com-v1-ibm-operators-edit
+  name: wmlbases.wml.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wml.cpd.ibm.com
@@ -52870,7 +52870,7 @@ kind: ClusterRole
 metadata:
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: dods.dods.cpd.ibm.com-v1-ibm-operators-edit
+  name: dods.dods.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - dods.cpd.ibm.com
@@ -71400,7 +71400,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71450,7 +71450,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: subscriptions.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: subscriptions.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71472,7 +71472,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: imagecatalogs.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: imagecatalogs.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71494,7 +71494,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: publications.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: publications.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71516,7 +71516,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: clusterimagecatalogs.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: clusterimagecatalogs.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71538,7 +71538,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: databases.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: databases.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71560,7 +71560,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: clusters.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: clusters.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71582,7 +71582,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: poolers.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: poolers.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71604,7 +71604,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: scheduledbackups.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: scheduledbackups.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71626,7 +71626,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: backups.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: backups.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71648,7 +71648,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71660,11 +71660,11 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: postgresql-operator-manager
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 ---
 # Source: postgresql-cluster-scoped/templates/02-cluster-MutatingWebhook.yaml
 # Copyright 2021 EnterpriseDB Corporation
@@ -71702,9 +71702,9 @@ subjects:
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: postgresql-operator-mutating-webhook-configuration-ibm-operators
+  name: postgresql-operator-mutating-webhook-configuration-${PROJECT_CPD_INST_OPERATORS}
   annotations:
-    cert-manager.io/inject-ca-from: ibm-operators/edb-webhook-cert
+    cert-manager.io/inject-ca-from: ${PROJECT_CPD_INST_OPERATORS}/edb-webhook-cert
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71719,7 +71719,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-backup
       port: 443
   failurePolicy: Fail
@@ -71729,7 +71729,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71746,7 +71746,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-cluster
       port: 443
   failurePolicy: Fail
@@ -71756,7 +71756,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71773,7 +71773,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-database
       port: 443
   failurePolicy: Fail
@@ -71783,7 +71783,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71800,7 +71800,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-scheduledbackup
       port: 443
   failurePolicy: Fail
@@ -71810,7 +71810,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71827,7 +71827,7 @@ webhooks:
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: postgresql-operator-validating-webhook-configuration-ibm-operators
+  name: postgresql-operator-validating-webhook-configuration-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -71837,14 +71837,14 @@ metadata:
     app.kubernetes.io/version: "1.25.5"
     app.kubernetes.io/managed-by: Helm
   annotations:
-    cert-manager.io/inject-ca-from: ibm-operators/edb-webhook-cert
+    cert-manager.io/inject-ca-from: ${PROJECT_CPD_INST_OPERATORS}/edb-webhook-cert
 webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-backup
       port: 443
   failurePolicy: Fail
@@ -71854,7 +71854,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71871,7 +71871,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-cluster
       port: 443
   failurePolicy: Fail
@@ -71881,7 +71881,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71898,7 +71898,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-scheduledbackup
       port: 443
   failurePolicy: Fail
@@ -71908,7 +71908,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71925,7 +71925,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-database
       port: 443
   failurePolicy: Fail
@@ -71935,7 +71935,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -71952,7 +71952,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-pooler
       port: 443
   failurePolicy: Fail
@@ -71962,7 +71962,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
     - apiGroups:
         - postgresql.k8s.enterprisedb.io
@@ -72077,7 +72077,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cpdedbinstances.edb.cpd.ibm.com-v1-ibm-operators-edit
+  name: cpdedbinstances.edb.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: edb-cp4d-cluster-scoped
     icpdsupport/addOnId: edb
@@ -72106,7 +72106,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cpdedbservices.edb.cpd.ibm.com-v1-ibm-operators-edit
+  name: cpdedbservices.edb.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: edb-cp4d-cluster-scoped
     icpdsupport/addOnId: edb
@@ -72253,7 +72253,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     component-id: hee-cluster-scoped
     icpdsupport/addOnId: "hadoop"
-  name: hadoop.hadoop.cpd.ibm.com-v1-ibm-operators-edit
+  name: hadoop.hadoop.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - hadoop.cpd.ibm.com
@@ -72270,7 +72270,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ibm-cpd-hadoop-operator-cluster-role-ibm-operators
+  name: ibm-cpd-hadoop-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
   labels:
      component-id: hee-cluster-scoped
      app.kubernetes.io/instance: ibm-cpd-hadoop-operator-cluster-role
@@ -102384,7 +102384,7 @@ metadata:
     component-id: opencontent-fdb-cluster-scoped
     icpdsupport/addOnId: fdb
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: opencontent-fdb-cluster-role-ibm-operators-edit
+  name: opencontent-fdb-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - apps.foundationdb.org
@@ -102525,7 +102525,7 @@ metadata:
     component-id: ibm-neo4j-cluster-scoped
     icpdsupport/addOnId: ibm_neo4j
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: neo4jclusters.neo4j.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: neo4jclusters.neo4j.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - neo4j.cpd.ibm.com
@@ -102650,7 +102650,7 @@ metadata:
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: watsonx_ai_ifm
-  name: watsonxaiifm.watsonxaiifm.cpd.ibm.com-v1-ibm-operators-edit
+  name: watsonxaiifm.watsonxaiifm.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - watsonxaiifm.cpd.ibm.com
@@ -102929,7 +102929,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ikc-premium-cluster-role-ibm-operators-edit
+  name: ikc-premium-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: ikc-premium-cluster-scoped
     icpdsupport/addOnId: ikc_premium
@@ -103462,7 +103462,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ikc-standard-cluster-role-ibm-operators-edit
+  name: ikc-standard-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: ikc-standard-cluster-scoped
     icpdsupport/addOnId: ikc_standard
@@ -103746,7 +103746,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ikc-premium-cluster-role-ibm-operators-edit
+  name: ikc-premium-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: ikc-premium-cluster-scoped
     icpdsupport/addOnId: ikc_premium
@@ -104279,7 +104279,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ikc-standard-cluster-role-ibm-operators-edit
+  name: ikc-standard-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: ikc-standard-cluster-scoped
     icpdsupport/addOnId: ikc_standard
@@ -104415,7 +104415,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: datalineage-cluster-role-ibm-operators-edit
+  name: datalineage-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: datalineage-cluster-scoped
     icpdsupport/addOnId: datalineage
@@ -105351,7 +105351,7 @@ metadata:
     component-id: opencontent-rabbitmq-cluster-scoped
     icpdsupport/addOnId: opencontent-rabbitmq
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: rabbitmqclusters.rabbitmq.opencontent.ibm.com-v1-ibm-operators-edit
+  name: rabbitmqclusters.rabbitmq.opencontent.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - rabbitmq.opencontent.ibm.com
@@ -105556,7 +105556,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ibm-mdm-operator-cluster-role-ibm-operators
+  name: ibm-mdm-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: match360-cluster-scoped
     icpdsupport/addOnId: mdm
@@ -105585,7 +105585,7 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: masterdatamanagements.mdm.cpd.ibm.com-v1-ibm-operators-edit
+  name: masterdatamanagements.mdm.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: match360-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -105609,17 +105609,17 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: ibm-mdm-operator-cluster-role-binding-ibm-operators
+  name: ibm-mdm-operator-cluster-role-binding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: match360-cluster-scoped
     icpdsupport/addOnId: mdm
 subjects:
 - kind: ServiceAccount
   name: ibm-mdm-operator-manager
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   kind: ClusterRole
-  name: ibm-mdm-operator-cluster-role-ibm-operators
+  name: ibm-mdm-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: match360-cluster-scoped/templates/01-cluster-rbac.yaml
@@ -105759,7 +105759,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: streamsetsinstallers.streamsets.cpd.ibm.com-v1alpha1-ibm-operators-edit
+  name: streamsetsinstallers.streamsets.cpd.ibm.com-v1alpha1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: streamsets-cluster-scoped
     icpdsupport/addOnId: streamsets
@@ -106666,7 +106666,7 @@ metadata:
   labels:
     component-id: informix-cluster-scoped
     icpdsupport/addOnId: informix
-  name: ibm-in4mix-operator-ibm-operators
+  name: ibm-in4mix-operator-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - ''
@@ -107061,15 +107061,15 @@ metadata:
   labels:
     component-id: informix-cluster-scoped
     icpdsupport/addOnId: informix
-  name: ibm-in4mix-operator-ibm-operators
+  name: ibm-in4mix-operator-${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ibm-in4mix-operator-ibm-operators
+  name: ibm-in4mix-operator-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
-  name: ibm-in4mix-operator-ibm-operators
-  namespace: ibm-operators
+  name: ibm-in4mix-operator-${PROJECT_CPD_INST_OPERATORS}
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'informix_cp4d'
 ---
 # Source: informix-cp4d-cluster-scoped/templates/00-crd.yaml
@@ -107131,7 +107131,7 @@ spec:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibm-in4mix-cp4d-operator-proxy-role-ibm-operators
+  name: ibm-in4mix-cp4d-operator-proxy-role-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: informix-cp4d-cluster-scoped
     icpdsupport/addOnId: informix
@@ -107177,7 +107177,7 @@ metadata:
     component-id: informix-cp4d-cluster-scoped
     icpdsupport/addOnId: informix
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: informixservice-v1-ibm-operators-edit
+  name: informixservice-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - ifx.ibm.com
@@ -107194,7 +107194,7 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibm-in4mix-cp4d-operator-proxy-rolebinding-ibm-operators
+  name: ibm-in4mix-cp4d-operator-proxy-rolebinding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: informix-cp4d-cluster-scoped
     icpdsupport/addOnId: informix
@@ -107204,11 +107204,11 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: ibm-informix-cp4d-operator-system-ibm-operators
+    namespace: ibm-informix-cp4d-operator-system-${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ibm-inrmix-cp4d-operator-proxy-role-ibm-operators
+  name: ibm-inrmix-cp4d-operator-proxy-role-${PROJECT_CPD_INST_OPERATORS}
 #Helm install is not supported for 'mantaflow'
 #Generating cluster scoped resource for 'mongodb'
 ---
@@ -113783,7 +113783,7 @@ metadata:
   labels:
     component-id: mongodb-cluster-scoped
     icpdsupport/addOnId: mongodb
-  name: mongodb-enterprise-operator-cluster-role-ibm-operators
+  name: mongodb-enterprise-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - nonResourceURLs:
   - /version
@@ -113808,7 +113808,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: mongodb.mongodb.com-v1-ibm-operators-edit
+  name: mongodb.mongodb.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -113828,7 +113828,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: mongodbmulti.mongodb.com-v1-ibm-operators-edit
+  name: mongodbmulti.mongodb.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -113848,7 +113848,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: mongodbmulticluster.mongodb.com-v1-ibm-operators-edit
+  name: mongodbmulticluster.mongodb.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -113868,7 +113868,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: mongodbusers.mongodb.com-v1-ibm-operators-edit
+  name: mongodbusers.mongodb.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -113888,7 +113888,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: opsmanagers.mongodb.com-v1-ibm-operators-edit
+  name: opsmanagers.mongodb.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -113911,15 +113911,15 @@ metadata:
   labels:
     component-id: mongodb-cluster-scoped
     icpdsupport/addOnId: mongodb
-  name: mongodb-enterprise-operator-cluster-role-binding-ibm-operators
+  name: mongodb-enterprise-operator-cluster-role-binding-${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: mongodb-enterprise-operator-cluster-role-ibm-operators
+  name: mongodb-enterprise-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: mongodb-enterprise-operator
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'mongodb_cp4d'
 ---
 # Source: mongodb-cp4d-cluster-scoped/templates/mongodb.cpd.ibm.com_cpdmongodbopsmanagers.yaml
@@ -114089,7 +114089,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cpdmongodbservices.mongodb.cpd.ibm.com-v1-ibm-operators-edit
+  name: cpdmongodbservices.mongodb.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cp4d-cluster-scoped
     icpdsupport/addOnId: mongodb
@@ -114110,7 +114110,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cpdmongodbopsmanagers.mongodb.cpd.ibm.com-v1-ibm-operators-edit
+  name: cpdmongodbopsmanagers.mongodb.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cp4d-cluster-scoped
     icpdsupport/addOnId: mongodb
@@ -114131,7 +114131,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cpdmongodbs.mongodb.cpd.ibm.com-v1-ibm-operators-edit
+  name: cpdmongodbs.mongodb.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: mongodb-cp4d-cluster-scoped
     icpdsupport/addOnId: mongodb
@@ -114232,7 +114232,7 @@ metadata:
   labels:
     component-id: db2aaservice-cluster-scoped
     icpdsupport/addOnId: db2aaservice
-  name: db2aaservice-operator-cluster-role-ibm-operators
+  name: db2aaservice-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - apiGroups:
   - ''
@@ -114256,7 +114256,7 @@ metadata:
     component-id: db2aaservice-cluster-scoped
     icpdsupport/addOnId: db2aaservice
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: db2aaserviceservices.databases.cpd.ibm.com-v1-ibm-operators-edit
+  name: db2aaserviceservices.databases.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - databases.cpd.ibm.com
@@ -114277,15 +114277,15 @@ metadata:
   labels:
     component-id: db2aaservice-cluster-scoped
     icpdsupport/addOnId: db2aaservice
-  name: db2aaservice-operator-cluster-role-binding-ibm-operators
+  name: db2aaservice-operator-cluster-role-binding-${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: db2aaservice-operator-cluster-role-ibm-operators
+  name: db2aaservice-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: ibm-db2aaservice-cp4d-operator-db2u-cp4d-operator
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 #Generating cluster scoped resource for 'openpages'
 ---
 # Source: openpages-cluster-scoped/templates/00-crd-openpagesinstance.yml
@@ -114587,7 +114587,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: openpagesinstances.openpages.cpd.ibm.com-v1-ibm-operators-edit
+  name: openpagesinstances.openpages.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: openpages-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -114609,7 +114609,7 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: openpagesservices.openpages.cpd.ibm.com-v1-ibm-operators-edit
+  name: openpagesservices.openpages.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: openpages-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -114765,7 +114765,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: wspipelines.wspipelines.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: wspipelines.wspipelines.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: ws-pipelines-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -115243,7 +115243,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: paservices.pa.cpd.ibm.comm-v1-ibm-operators-edit
+  name: paservices.pa.cpd.ibm.comm-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: planning-analytics-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -115524,7 +115524,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ibm-productmaster-operator-cluster-role-ibm-operators
+  name: ibm-productmaster-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: productmaster-cluster-scoped
     icpdsupport/addOnId: productmaster
@@ -115589,7 +115589,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: productmasters.productmaster.cpd.ibm.com-v1-ibm-operators-edit
+  name: productmasters.productmaster.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: productmaster-cluster-scoped
     icpdsupport/addOnId: productmaster
@@ -115614,7 +115614,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: productmastersservice.productmaster.cpd.ibm.com-v1-ibm-operators-edit
+  name: productmastersservice.productmaster.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: productmaster-cluster-scoped
     icpdsupport/addOnId: productmaster
@@ -115639,7 +115639,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: ibm-productmaster-operator-cluster-rolebinding-ibm-operators
+  name: ibm-productmaster-operator-cluster-rolebinding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: productmaster-cluster-scoped
     icpdsupport/addOnId: productmaster
@@ -115648,11 +115648,11 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ibm-productmaster-operator-cluster-role-ibm-operators
+  name: ibm-productmaster-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
 subjects:
   - kind: ServiceAccount
     name: ibm-productmaster-operator-sa
-    namespace: ibm-operators
+    namespace: ${PROJECT_CPD_INST_OPERATORS}
 ---
 # Source: productmaster-cluster-scoped/templates/01-cluster-rbac.yaml
 # the name of cluster role and cluster role binding should be different from the existing ones to avoid being cleaned up by upgrade
@@ -115803,7 +115803,7 @@ status:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: rstudioaddons.rstudio.cpd.ibm.com-v1-ibm-operators-edit
+  name: rstudioaddons.rstudio.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: rstudio
@@ -115931,7 +115931,7 @@ metadata:
     component-id: canvasbase-cluster-scoped
     icpdsupport/addOnId: canvasbase
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: canvasbase.canvasbase.cpd.ibm.com-v1-ibm-operators-edit
+  name: canvasbase.canvasbase.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - canvasbase.cpd.ibm.com
@@ -116048,7 +116048,7 @@ metadata:
     component-id: spss-cluster-scoped
     icpdsupport/addOnId: spss-modeler
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: spss.spssmodeler.cpd.ibm.com-v1-ibm-operators-edit
+  name: spss.spssmodeler.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - spssmodeler.cpd.ibm.com
@@ -116163,7 +116163,7 @@ metadata:
     component-id: syntheticdata-cluster-scoped
     icpdsupport/addOnId: unreal-data
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: syntheticdata.syntheticdata.cpd.ibm.com-v1-ibm-operators-edit
+  name: syntheticdata.syntheticdata.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - syntheticdata.cpd.ibm.com
@@ -116703,7 +116703,7 @@ metadata:
     component-id: watson-gateway-cluster-scoped
     icpdsupport/addOnId: 'watson-gateway'
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: watsongateways.watson-gateway.watson.ibm.com-v1-ibm-operators-edit
+  name: watsongateways.watson-gateway.watson.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - watson-gateway.watson.ibm.com
@@ -139991,7 +139991,7 @@ spec:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: watsondiscoveries.discovery.watson.ibm.com-v1-ibm-operators-edit
+  name: watsondiscoveries.discovery.watson.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: watson-discovery-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -140215,7 +140215,7 @@ spec:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: woservices.wos.cpd.ibm.com-v1-ibm-operators-edit
+  name: woservices.wos.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: openscale-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -140447,7 +140447,7 @@ metadata:
     component-id: "watson-speech-cluster-scoped"
     icpdsupport/addOnId: 'speech-to-text'
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: watsonspeeches.speech.watson.ibm.com-v1-ibm-operators-edit
+  name: watsonspeeches.speech.watson.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - speech.watson.ibm.com
@@ -141602,7 +141602,7 @@ metadata:
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     icpdsupport/addOnId: watsonx_ai
-  name: watsonxai.watsonxai.cpd.ibm.com-v1-ibm-operators-edit
+  name: watsonxai.watsonxai.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - watsonxai.cpd.ibm.com
@@ -150522,7 +150522,7 @@ metadata:
     component-id: watson-assistant-cluster-scoped
     icpdsupport/addOnId: assistant
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: watsonassistants.assistant.watson.ibm.com-v1-ibm-operators-edit
+  name: watsonassistants.assistant.watson.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - assistant.watson.ibm.com
@@ -150678,7 +150678,7 @@ metadata:
     component-id: wca-base-cluster-scoped
     icpdsupport/addOnId: code-assistant-base
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: wcabases.wca.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: wcabases.wca.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wca.cpd.ibm.com
@@ -150846,7 +150846,7 @@ metadata:
     component-id: wca-cluster-scoped
     icpdsupport/addOnId: code-assistant
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: wcas.wca.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: wcas.wca.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wca.cpd.ibm.com
@@ -151003,7 +151003,7 @@ metadata:
     component-id: wca-ansible-cluster-scoped
     icpdsupport/addOnId: code-assistant-ansible
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: wcaansibles.wca.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: wcaansibles.wca.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wca.cpd.ibm.com
@@ -151152,7 +151152,7 @@ metadata:
     component-id: wca-z-cluster-scoped
     icpdsupport/addOnId: code-assistant-z
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  name: wcazs.wca.cpd.ibm.com-v1beta1-ibm-operators-edit
+  name: wcazs.wca.cpd.ibm.com-v1beta1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wca.cpd.ibm.com
@@ -151399,7 +151399,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ibm-wca-z-code-explanation-cluster-role-ibm-operators-edit
+  name: ibm-wca-z-code-explanation-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: wca-z-ce-cluster-scoped
     icpdsupport/addOnId: code-assistant-z-code-explanation
@@ -152174,7 +152174,7 @@ metadata:
     app.kubernetes.io/name: ClusterRole
     app.kubernetes.io/part-of: ibm-lakehouse
     icpdsupport/addOnId: watsonx-data 
-  name: ibm-lakehouse-metrics-reader-ibm-operators
+  name: ibm-lakehouse-metrics-reader-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - nonResourceURLs:
   - /metrics
@@ -152192,7 +152192,7 @@ metadata:
     app.kubernetes.io/name: ClusterRole
     app.kubernetes.io/part-of: ibm-lakehouse
     icpdsupport/addOnId: watsonx-data
-  name: wxdengine-metrics-reader-ibm-operators
+  name: wxdengine-metrics-reader-${PROJECT_CPD_INST_OPERATORS}
 rules:
 - nonResourceURLs:
   - /metrics
@@ -152207,7 +152207,7 @@ metadata:
     component-id: watsonx-data-cluster-scoped
     icpdsupport/addOnId: watsonx-data
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: watsonx-data-cluster-role-ibm-operators-edit
+  name: watsonx-data-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - watsonxdata.ibm.com
@@ -152376,7 +152376,7 @@ metadata:
     component-id: watsonx-data-premium-cluster-scoped
     icpdsupport/addOnId: watsonx-data-premium
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: watsonx-data-premium-cluster-role-ibm-operators-edit
+  name: watsonx-data-premium-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - watsonxdata.ibm.com
@@ -152531,7 +152531,7 @@ status:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: watsonxgovernance.cpd.ibm.com-v1-ibm-operators-edit
+  name: watsonxgovernance.cpd.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: watsonx-governance-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -155005,7 +155005,7 @@ metadata:
     component-id: watsonx-orchestrate-cluster-scoped
     icpdsupport/addOnId: orchestrate
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: wocomponentservices.wo.watsonx.ibm.com-v1-ibm-operators-edit
+  name: wocomponentservices.wo.watsonx.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wo.watsonx.ibm.com
@@ -155025,7 +155025,7 @@ metadata:
     component-id: watsonx-orchestrate-cluster-scoped
     icpdsupport/addOnId: orchestrate
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: documentprocessings.watsonx.ibm.com-v1-ibm-operators-edit
+  name: documentprocessings.watsonx.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - watsonx.ibm.com
@@ -155046,7 +155046,7 @@ metadata:
     component-id: watsonx-orchestrate-cluster-scoped
     icpdsupport/addOnId: orchestrate
     rbac.authorization.k8s.io/aggregate-to-edit: 'true'
-  name: watsonxorchestrates.wo.watsonx.ibm.com-v1-ibm-operators-edit
+  name: watsonxorchestrates.wo.watsonx.ibm.com-v1-${PROJECT_CPD_INST_OPERATORS}-edit
 rules:
 - apiGroups:
   - wo.watsonx.ibm.com
@@ -155191,7 +155191,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ibm-zen-operator-cluster-role-ibm-operators
+  name: ibm-zen-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: zen-cluster-scoped
     icpdsupport/addOnId: zen-lite
@@ -155266,7 +155266,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: zen-lite-cluster-role-ibm-operators-edit
+  name: zen-lite-cluster-role-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: zen-cluster-scoped
     icpdsupport/addOnId: zen-lite
@@ -155289,17 +155289,17 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: ibm-zen-operator-cluster-role-binding-ibm-operators
+  name: ibm-zen-operator-cluster-role-binding-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: zen-cluster-scoped
     icpdsupport/addOnId: zen-lite
 subjects:
 - kind: ServiceAccount
   name: ibm-zen-operator-serviceaccount
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 roleRef:
   kind: ClusterRole
-  name: ibm-zen-operator-cluster-role-ibm-operators
+  name: ibm-zen-operator-cluster-role-${PROJECT_CPD_INST_OPERATORS}
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: zen-cluster-scoped/templates/01-cluster-rbac.yaml
@@ -173817,7 +173817,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173867,7 +173867,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: subscriptions.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: subscriptions.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173889,7 +173889,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: imagecatalogs.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: imagecatalogs.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173911,7 +173911,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: publications.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: publications.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173933,7 +173933,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: clusterimagecatalogs.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: clusterimagecatalogs.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173955,7 +173955,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: databases.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: databases.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173977,7 +173977,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: clusters.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: clusters.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -173999,7 +173999,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: poolers.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: poolers.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -174021,7 +174021,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: scheduledbackups.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: scheduledbackups.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -174043,7 +174043,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: backups.postgresql.k8s.enterprisedb.io-v1-ibm-operators-edit
+  name: backups.postgresql.k8s.enterprisedb.io-v1-${PROJECT_CPD_INST_OPERATORS}-edit
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -174065,7 +174065,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -174077,11 +174077,11 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: postgresql-operator-controller-manager-ibm-operators
+  name: postgresql-operator-controller-manager-${PROJECT_CPD_INST_OPERATORS}
 subjects:
 - kind: ServiceAccount
   name: postgresql-operator-manager
-  namespace: ibm-operators
+  namespace: ${PROJECT_CPD_INST_OPERATORS}
 ---
 # Source: postgresql-cluster-scoped/templates/02-cluster-MutatingWebhook.yaml
 # Copyright 2021 EnterpriseDB Corporation
@@ -174119,9 +174119,9 @@ subjects:
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: postgresql-operator-mutating-webhook-configuration-ibm-operators
+  name: postgresql-operator-mutating-webhook-configuration-${PROJECT_CPD_INST_OPERATORS}
   annotations:
-    cert-manager.io/inject-ca-from: ibm-operators/edb-webhook-cert
+    cert-manager.io/inject-ca-from: ${PROJECT_CPD_INST_OPERATORS}/edb-webhook-cert
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -174136,7 +174136,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-backup
       port: 443
   failurePolicy: Fail
@@ -174146,7 +174146,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174163,7 +174163,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-cluster
       port: 443
   failurePolicy: Fail
@@ -174173,7 +174173,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174190,7 +174190,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-database
       port: 443
   failurePolicy: Fail
@@ -174200,7 +174200,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174217,7 +174217,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /mutate-postgresql-k8s-enterprisedb-io-v1-scheduledbackup
       port: 443
   failurePolicy: Fail
@@ -174227,7 +174227,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174244,7 +174244,7 @@ webhooks:
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: postgresql-operator-validating-webhook-configuration-ibm-operators
+  name: postgresql-operator-validating-webhook-configuration-${PROJECT_CPD_INST_OPERATORS}
   labels:
     component-id: postgresql-cluster-scoped
     icpdsupport/addOnId: postgresql
@@ -174254,14 +174254,14 @@ metadata:
     app.kubernetes.io/version: "1.25.5"
     app.kubernetes.io/managed-by: Helm
   annotations:
-    cert-manager.io/inject-ca-from: ibm-operators/edb-webhook-cert
+    cert-manager.io/inject-ca-from: ${PROJECT_CPD_INST_OPERATORS}/edb-webhook-cert
 webhooks:
 - admissionReviewVersions:
   - v1
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-backup
       port: 443
   failurePolicy: Fail
@@ -174271,7 +174271,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174288,7 +174288,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-cluster
       port: 443
   failurePolicy: Fail
@@ -174298,7 +174298,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174315,7 +174315,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-scheduledbackup
       port: 443
   failurePolicy: Fail
@@ -174325,7 +174325,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174342,7 +174342,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-database
       port: 443
   failurePolicy: Fail
@@ -174352,7 +174352,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
   - apiGroups:
     - postgresql.k8s.enterprisedb.io
@@ -174369,7 +174369,7 @@ webhooks:
   clientConfig:
     service:
       name: postgresql-operator-webhook-service
-      namespace: ibm-operators
+      namespace: ${PROJECT_CPD_INST_OPERATORS}
       path: /validate-postgresql-k8s-enterprisedb-io-v1-pooler
       port: 443
   failurePolicy: Fail
@@ -174379,7 +174379,7 @@ webhooks:
     - key: kubernetes.io/metadata.name
       operator: In
       values:
-      - ibm-operators
+      - ${PROJECT_CPD_INST_OPERATORS}
   rules:
     - apiGroups:
         - postgresql.k8s.enterprisedb.io

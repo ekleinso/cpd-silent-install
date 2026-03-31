@@ -752,7 +752,7 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: scheduling.scheduler.spectrumcomputing.ibm.com-v1-ibm-scheduler-edit
+  name: scheduling.scheduler.spectrumcomputing.ibm.com-v1-${PROJECT_SCHEDULING_SERVICE}-edit
   labels:
     component-id: scheduler-cluster-scoped
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -785,4 +785,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: ibm-cpd-scheduling-operator
-  namespace: ibm-scheduler
+  namespace: ${PROJECT_SCHEDULING_SERVICE}

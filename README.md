@@ -161,17 +161,17 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
 ```shell
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f secret.yaml
 ```
-12. Update ***spec.containers[0].image*** in **1-pod-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
+12. Update ***spec.containers[0].image*** in **1-cpd-shared.yaml** to point to the correct repository/image as necessary for your environment. Create pod to invoke install of shared components for Cloud Pak for Data.
 ```shell
-envsubst < 1-pod-shared.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
+envsubst < 1-cpd-shared.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 ```
 13. Monitor install log and/or check pod status until it is completed
 ```shell
-oc logs -n ${PROJECT_CPD_INST_OPERANDS} -f -l app=cpd-shared
+oc -n ${PROJECT_CPD_INST_OPERANDS} logs -f job.batch/cpd-shared-v53x 
 ```
 or 
 ```shell
-oc -n ${PROJECT_CPD_INST_OPERANDS} get po -l app=cpd-shared
+oc -n ${PROJECT_CPD_INST_OPERANDS} get job -l app=cpd-shared -w
 ```
 14. (Optional) If pod completes successfully it is safe to cleanup *case-* ConfigMaps
 ```shell
@@ -184,4 +184,8 @@ envsubst < 2-cpd-install.yaml | oc create -n ${PROJECT_CPD_INST_OPERANDS} -f -
 16. Monitor job status until it is completed
 ```shell
 oc -n ${PROJECT_CPD_INST_OPERANDS} get job -l app=cpd-install -w
+```
+or
+```shell
+oc -n ${PROJECT_CPD_INST_OPERANDS} logs -f job.batch/cpd-install-v53x 
 ```

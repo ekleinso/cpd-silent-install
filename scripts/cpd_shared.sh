@@ -25,59 +25,32 @@ if [ "${IMAGE_PULL_PREFIX}" == "icr.io" ]; then
   else
     IMAGE_PULL_CREDENTIALS=$(echo -n "cp:${IBM_ENTITLEMENT_KEY}" | base64 -w 0)
     cat <<EOF > /tmp/work/dockerconfig.json 
-    {
-      "auths": {
-        "cp.icr.io": {
-          "auth": "${IMAGE_PULL_CREDENTIALS}"
-        },
-        "icr.io":{
-          "auth": "${IMAGE_PULL_CREDENTIALS}"
-        }
-      }
-    }
-    EOF
+{"auths": {"cp.icr.io": {"auth": "${IMAGE_PULL_CREDENTIALS}"},"icr.io":{"auth": "${IMAGE_PULL_CREDENTIALS}"}}}
+EOF
   fi
 else
   if [ -z "${PRIVATE_REGISTRY_USER}" ] && [ -z "${PRIVATE_REGISTRY_PASSWORD}" ]; then
       IMAGE_PULL_CREDENTIALS=$(echo -n "using_global:using_global" | base64 -w 0)
       cat <<EOF > /tmp/work/dockerconfig.json 
-      {
-        "auths": {
-          "using_global": {
-            "auth": "${IMAGE_PULL_CREDENTIALS}"
-          }
-        }
-      }
-      EOF
+{"auths": {"using_global": {"auth": "${IMAGE_PULL_CREDENTIALS}"}}}
+EOF
   else
     if [ "${PRIVATE_REGISTRY_USER}" == "global" ]; then
       IMAGE_PULL_CREDENTIALS=$(echo -n "using_global:using_global" | base64 -w 0)
       cat <<EOF > /tmp/work/dockerconfig.json 
-      {
-        "auths": {
-          "using_global": {
-            "auth": "${IMAGE_PULL_CREDENTIALS}"
-          }
-        }
-      }
-      EOF
+{"auths": {"using_global": {"auth": "${IMAGE_PULL_CREDENTIALS}"}}}
+EOF
     else
       IMAGE_PULL_CREDENTIALS=$(echo -n "${PRIVATE_REGISTRY_USER}:${PRIVATE_REGISTRY_PASSWORD}" | base64 -w 0)
       cat <<EOF > /tmp/work/dockerconfig.json 
-      {
-        "auths": {
-          "${IMAGE_PULL_PREFIX%/*}": {
-            "auth": "${IMAGE_PULL_CREDENTIALS}"
-          }
-        }
-      }
-      EOF
+{"auths": {"${IMAGE_PULL_PREFIX%/*}": {"auth": "${IMAGE_PULL_CREDENTIALS}"}}}
+EOF
     fi
   fi
 fi
-oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_SCHEDULING_SERVICE}
-oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERATORS}
-oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file ".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERANDS}
+oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file=".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_SCHEDULING_SERVICE}
+oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file=".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERATORS}
+oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file=".dockerconfigjson=/tmp/work/dockerconfig.json" --namespace=${PROJECT_CPD_INST_OPERANDS}
 ################################################################################
 # Install License Manager and Scheduler
 ################################################################################

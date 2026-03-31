@@ -62,8 +62,8 @@ ROLE=nss-managed-role.5.3.1 envsubst < cpd-rolebindings.yaml | oc create -f -
 - [Scheduler](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=cluster-creating-scoped-resources-shared-components) 
 - [CPD Components](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=hub-creating-cluster-scoped-resources)
 ```shell
-oc apply -f scheduler-cluster_scoped_resources.yaml --server-side --force-conflicts 
-oc apply -f cluster_scoped_resources.yaml --server-side --force-conflicts 
+envsubst < scheduler-cluster_scoped_resources.yaml | oc apply --server-side --force-conflicts -f -
+envsubst < cluster_scoped_resources.yaml | oc apply --server-side --force-conflicts -f -
 ```
 ## Installation Notes
 1. Login with OpenShift cli

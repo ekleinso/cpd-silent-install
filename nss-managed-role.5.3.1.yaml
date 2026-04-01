@@ -3,7 +3,7 @@ kind: Role
 metadata:
   labels:
     managed-by: nss
-  name: nss-managed-role.5.3.1
+  name: nss-managed-role-from-ibm-operators 
 rules:
 - apiGroups:
   - ''

@@ -54,9 +54,9 @@ oc apply -f cpd-licensemanager-roles.yaml
 6. Create role bindings for service account
 ```shell
 envsubst < rolebindings.yaml | oc create -f -
-ROLE=cpd-instance-admin.5.3.1 envsubst < cpd-rolebindings.yaml | oc create -f -
-ROLE=cpd-instance-crs.5.3.1 envsubst < cpd-rolebindings.yaml | oc create -f -
-ROLE=nss-managed-role.5.3.1 envsubst < cpd-rolebindings.yaml | oc create -f -
+ROLE=cpd-silent-install-cpd-instance-admin.5.3.1 envsubst < cpd-rolebindings.yaml | oc create -f -
+ROLE=cpd-silent-install-cpd-instance-crs.5.3.1 envsubst < cpd-rolebindings.yaml | oc create -f -
+ROLE=nss-managed-role-from-${PROJECT_CPD_INST_OPERATORS} envsubst < cpd-rolebindings.yaml | oc create -f -
 ```
 7. Add cluster scoped custom resource definitions 
 - [Scheduler](https://www.ibm.com/docs/en/software-hub/5.3.x?topic=cluster-creating-scoped-resources-shared-components) 

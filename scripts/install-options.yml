@@ -1,8 +1,10 @@
 ################################################################################
-# IBM Knowledge Catalog parameters
+# IBM Watsonx Orchestrate
 ################################################################################
 non_olm:
-  wkc:
-    enableKnowledgeGraph: True
-    useFDB: True
-    enableDataQuality: True
+  watsonxOrchestrate:
+    installMode: "agentic"  
+    watsonxAI:
+      watsonxaiifm: true
+      syomModels: []
+      ootbModels: [ibm-slate-30m-english-rtrvr]

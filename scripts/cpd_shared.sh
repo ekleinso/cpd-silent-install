@@ -55,4 +55,7 @@ oc create secret docker-registry ${IMAGE_PULL_SECRET} --from-file=".dockerconfig
 # Install License Manager and Scheduler
 ################################################################################
 apply-cluster-components --release=${VERSION} --license_acceptance=true --licensing_ns=${PROJECT_LICENSE_SERVICE}
+case-download --components=scheduler --release=${VERSION} --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --cluster_resources=true
+oc apply -f /tmp/work/cluster_scoped_resources.yaml --server-side --force-conflicts | tee /tmp/work/scheduler-cluster_scoped_resources.out
+mv /tmp/work/cluster_scoped_resources.yaml /tmp/work/scheduler-cluster_scoped_resources.yaml
 apply-scheduler --release=${VERSION} --license_acceptance=true --scheduler_ns=${PROJECT_SCHEDULING_SERVICE} --image_pull_prefix=${IMAGE_PULL_PREFIX} --image_pull_secret=${IMAGE_PULL_SECRET}

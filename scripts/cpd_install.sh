@@ -7,6 +7,10 @@ login-to-ocp --token=${OCP_TOKEN} --server=${OCP_URL}
 ################################################################################
 # Install Cloud Pak for Data
 ################################################################################
+export NOOBAA_ACCOUNT_CREDENTIALS_SECRET=noobaa-admin
+export NOOBAA_ACCOUNT_CERTIFICATE_SECRET=noobaa-s3-serving-cert
+setup-mcg --components=watson_assistant --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --noobaa_account_secret=${NOOBAA_ACCOUNT_CREDENTIALS_SECRET} --noobaa_cert_secret=${NOOBAA_ACCOUNT_CERTIFICATE_SECRET}
+setup-mcg --components=watsonx_orchestrate --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} --noobaa_account_secret=${NOOBAA_ACCOUNT_CREDENTIALS_SECRET} --noobaa_cert_secret=${NOOBAA_ACCOUNT_CERTIFICATE_SECRET}
 case-download --components=${COMPONENTS} --release=${VERSION} --operator_ns=${PROJECT_CPD_INST_OPERATORS} --cluster_resources=true
 oc apply -f /tmp/work/cluster_scoped_resources.yaml --server-side --force-conflicts | tee /tmp/work/cluster_scoped_resources.out
 authorize-instance-topology --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}

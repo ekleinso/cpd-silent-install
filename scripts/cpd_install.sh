@@ -15,7 +15,7 @@ setup-mcg --components=watsonx_orchestrate --cpd_instance_ns=${PROJECT_CPD_INST_
 # Deploy knative
 ################################################################################
 deploy-events-operator --release=${VERSION} --cluster_resources=true
-oc apply -f cpd-cli-workspace/olm-utils-workspace/work/ibm-events-operator-crds.yaml --server-side --force-conflicts
+oc apply -f cpd-cli-workspace/olm-utils-workspace/work/ibm-events-operator-crds.yaml --server-side --force-conflicts | tee /tmp/work/ibm-events-operator-crds.out
 deploy-knative-eventing --release=${VERSION} --block_storage_class=${STG_CLASS_BLOCK}
 ################################################################################
 # Install Cloud Pak for Data

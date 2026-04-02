@@ -110,6 +110,7 @@ oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-19.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-20.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-21.yaml
 oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-22.yaml
+oc create -n ${PROJECT_CPD_INST_OPERANDS} -f case-23.yaml
 ```
 11. Create secrets
 ```shell

@@ -103,6 +103,9 @@ spec:
           - name: case-22
             mountPath: /opt/ansible/case.22
             subPath: case-22
+          - name: case-23
+            mountPath: /opt/ansible/case.23
+            subPath: case-23
       restartPolicy: Never
       serviceAccount: cpd-silent-install
       volumes:
@@ -205,6 +208,10 @@ spec:
           configMap:
             defaultMode: 0755
             name: case-22
+        - name: case-23
+          configMap:
+            defaultMode: 0755
+            name: case-23
       securityContext:
         fsGroup: 0
         runAsNonRoot: true

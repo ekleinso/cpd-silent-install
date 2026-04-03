@@ -8,3 +8,10 @@ non_olm:
       watsonxaiifm: true
       syomModels: []
       ootbModels: [ibm-slate-30m-english-rtrvr]
+################################################################################
+# IBM Knowledge Catalog parameters
+################################################################################
+  wkc:
+    enableKnowledgeGraph: True
+    useFDB: True
+    enableDataQuality: True
